@@ -7,66 +7,66 @@ on:
   workflow_dispatch:
 
 jobs:
-  install-task-manual:
-    runs-on: ubuntu-24.04
-    env:
-      TASK_VERSION: v3.44.0
-    steps:
-      - name: Generate install directory
-        run: |
-          echo "TASK_BIN_DIR=${RUNNER_TOOL_CACHE}/task/${TASK_VERSION}/${RUNNER_ARCH}" >> "$GITHUB_ENV"
-      - name: Restore Task from cache
-        id: cache-task
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.TASK_BIN_DIR }}
-          key: task-${{ runner.arch }}-${{ runner.os }}-${{ env.TASK_VERSION }}
-      - name: Install Task (cache miss)
-        if: steps.cache-task.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p "${TASK_BIN_DIR}"
-          curl -sL https://taskfile.dev/install.sh | \
-            sh -s -- -d -b "${TASK_BIN_DIR}" ${TASK_VERSION}
-      - name: Add to path
-        run: |
-          echo "${TASK_BIN_DIR}" >> "$GITHUB_PATH"
-      - run: |
-          which task
-          task --version
+  # install-task-manual:
+  #   runs-on: ubuntu-24.04
+  #   env:
+  #     TASK_VERSION: v3.44.0
+  #   steps:
+  #     - name: Generate install directory
+  #       run: |
+  #         echo "TASK_BIN_DIR=${RUNNER_TOOL_CACHE}/task/${TASK_VERSION}/${RUNNER_ARCH}" >> "$GITHUB_ENV"
+  #     - name: Restore Task from cache
+  #       id: cache-task
+  #       uses: actions/cache@v4
+  #       with:
+  #         path: ${{ env.TASK_BIN_DIR }}
+  #         key: task-${{ runner.arch }}-${{ runner.os }}-${{ env.TASK_VERSION }}
+  #     - name: Install Task (cache miss)
+  #       if: steps.cache-task.outputs.cache-hit != 'true'
+  #       run: |
+  #         mkdir -p "${TASK_BIN_DIR}"
+  #         curl -sL https://taskfile.dev/install.sh | \
+  #           sh -s -- -d -b "${TASK_BIN_DIR}" ${TASK_VERSION}
+  #     - name: Add to path
+  #       run: |
+  #         echo "${TASK_BIN_DIR}" >> "$GITHUB_PATH"
+  #     - run: |
+  #         which task
+  #         task --version
 
-  install-task-illbjorn:
-    # composite action (doesn't cache)
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Setup Task
-        uses: illbjorn/setup-task@178d62406bf0554c24e1bd76d1e4d8e94fc0a638 # v0.1.0
-        with:
-          task_version: v3.44.0
-      - run: |
-          which task
-          task --version
+  # install-task-illbjorn:
+  #   # composite action (doesn't cache)
+  #   runs-on: ubuntu-24.04
+  #   steps:
+  #     - name: Setup Task
+  #       uses: illbjorn/setup-task@178d62406bf0554c24e1bd76d1e4d8e94fc0a638 # v0.1.0
+  #       with:
+  #         task_version: v3.44.0
+  #     - run: |
+  #         which task
+  #         task --version
 
-  install-task-rnorton5432:
-    # uses toolCache properly...
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Setup Task
-        uses: rnorton5432/setup-task@eec4717ae80f02d1614a4fecfa4a55d507768696 # v1.0.0
-        with:
-          task-version: 3.44.0
-      - run: |
-          which task
-          task --version
+  # install-task-rnorton5432:
+  #   # uses toolCache properly...
+  #   runs-on: ubuntu-24.04
+  #   steps:
+  #     - name: Setup Task
+  #       uses: rnorton5432/setup-task@eec4717ae80f02d1614a4fecfa4a55d507768696 # v1.0.0
+  #       with:
+  #         task-version: 3.44.0
+  #     - run: |
+  #         which task
+  #         task --version
 
-  install-task-arkade:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: alexellis/arkade-get@master
-        with:
-          task: v3.44.0
-      - run: |
-          which task
-          task --version
+  # install-task-arkade:
+  #   runs-on: ubuntu-24.04
+  #   steps:
+  #     - uses: alexellis/arkade-get@master
+  #       with:
+  #         task: v3.44.0
+  #     - run: |
+  #         which task
+  #         task --version
 
   install-task-setup-bin:
     runs-on: ubuntu-24.04
@@ -89,6 +89,6 @@ jobs:
           cd "${{ runner.tool_cache }}"
           tar -czf tool_cache.tar.gz *
       - name: Upload tool cache artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: ${{runner.tool_cache}}/tool_cache.tar.gz
