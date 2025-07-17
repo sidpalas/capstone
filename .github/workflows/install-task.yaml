@@ -71,6 +71,11 @@ jobs:
   install-task-setup-bin:
     runs-on: ubuntu-24.04
     steps:
+      # Great... but doesn't attempt to restore cache like https://github.com/actions/setup-node/blob/7e24a656e1c7a0d6f3eaef8d8e84ae379a5b035b/src/cache-restore.ts#L58C41-L60
+      - name: Clear any existing tool cache
+        run: |
+          mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
+          mkdir -p "${{ runner.tool_cache }}"
       - uses: supplypike/setup-bin@v4
         with:
           uri: "https://github.com/go-task/task/releases/download/v3.44.0/task_linux_amd64.tar.gz"
@@ -79,3 +84,11 @@ jobs:
       - run: |
           which task
           task --version
+      - name: Archive tool cache
+        run: |
+          cd "${{ runner.tool_cache }}"
+          tar -czf tool_cache.tar.gz *
+      - name: Upload tool cache artifact
+        uses: actions/upload-artifact@v3
+        with:
+          path: ${{runner.tool_cache}}/tool_cache.tar.gz
