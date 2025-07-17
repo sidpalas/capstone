@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       TASK_VERSION: v3.44.0
-      TASK_BIN_DIR: /usr/local/bin
+      TASK_BIN_DIR: /usr/local/bin # alredy exists and is in PATH...
     steps:
       - name: Restore Task from cache
         id: cache-task
@@ -51,7 +51,6 @@ jobs:
       - name: Install Task (cache miss)
         if: steps.cache-task.outputs.cache-hit != 'true'
         run: |
-          mkdir -p "${TASK_BIN_DIR}"
           curl -sL https://taskfile.dev/install.sh | \
             sh -s -- -d -b "${TASK_BIN_DIR}" ${TASK_VERSION}
       - run: |
