@@ -36,6 +36,28 @@ jobs:
           which task
           task --version
 
+  install-task-manual-2:
+    runs-on: ubuntu-24.04
+    env:
+      TASK_VERSION: v3.44.0
+      TASK_BIN_DIR: /usr/bin/task
+    steps:
+      - name: Restore Task from cache
+        id: cache-task
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.TASK_BIN_DIR }}
+          key: task-${{ runner.arch }}-${{ runner.os }}-${{ env.TASK_VERSION }}
+      - name: Install Task (cache miss)
+        if: steps.cache-task.outputs.cache-hit != 'true'
+        run: |
+          mkdir -p "${TASK_BIN_DIR}"
+          curl -sL https://taskfile.dev/install.sh | \
+            sh -s -- -d -b "${TASK_BIN_DIR}" ${TASK_VERSION}
+      - run: |
+          which task
+          task --version
+
   install-task-illbjorn:
     # composite action (doesn't cache)
     runs-on: ubuntu-24.04
@@ -44,7 +66,7 @@ jobs:
         uses: illbjorn/setup-task@178d62406bf0554c24e1bd76d1e4d8e94fc0a638 # v0.1.0
         with:
           task_version: v3.44.0
-          bin_dir: /opt/hostedtoolcache/task/3.44.0/x64 # TODO: generate dynamically
+          # bin_dir: /opt/hostedtoolcache/task/3.44.0/x64 # TODO: generate dynamically... setting bin_dir also doesn't impact where it gets installed
       - run: |
           which task
           task --version
@@ -79,7 +101,8 @@ jobs:
         run: |
           mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
           mkdir -p "${{ runner.tool_cache }}"
-      - uses: supplypike/setup-bin@v4
+      # Is there a way to know the install path apriori?
+      - uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
         with:
           uri: "https://github.com/go-task/task/releases/download/v3.44.0/task_linux_amd64.tar.gz"
           name: "task"
