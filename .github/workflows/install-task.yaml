@@ -28,7 +28,7 @@ jobs:
           mkdir -p "${TASK_BIN_DIR}"
           curl -sL https://taskfile.dev/install.sh | \
             sh -s -- -d -b "${TASK_BIN_DIR}" ${TASK_VERSION}
-      - name: Add TASK_BIN_DIR to path
+      - name: Add TASK_BIN_DIR to path (cache hit)
         if: steps.cache-task.outputs.cache-hit == 'true'
         run: |
           echo "${TASK_BIN_DIR}" >> "$GITHUB_PATH"
