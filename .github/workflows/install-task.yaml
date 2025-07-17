@@ -15,6 +15,10 @@ jobs:
       - name: Generate install directory
         run: |
           echo "TASK_BIN_DIR=${RUNNER_TOOL_CACHE}/task/${TASK_VERSION}/${RUNNER_ARCH}" >> "$GITHUB_ENV"
+          echo "${TASK_BIN_DIR}" >> "$GITHUB_PATH"
+      - run: |
+          which task || true
+          task --version || true
       - name: Restore Task from cache
         id: cache-task
         uses: actions/cache@v4
@@ -27,9 +31,6 @@ jobs:
           mkdir -p "${TASK_BIN_DIR}"
           curl -sL https://taskfile.dev/install.sh | \
             sh -s -- -d -b "${TASK_BIN_DIR}" ${TASK_VERSION}
-      - name: Add task to path
-        run: |
-          echo "${TASK_BIN_DIR}" >> "$GITHUB_PATH"
       - run: |
           which task
           task --version
