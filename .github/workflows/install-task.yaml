@@ -44,6 +44,7 @@ jobs:
         uses: illbjorn/setup-task@178d62406bf0554c24e1bd76d1e4d8e94fc0a638 # v0.1.0
         with:
           task_version: v3.44.0
+          bin_dir: /opt/hostedtoolcache/task/3.44.0/x64 # TODO: generate dynamically
       - run: |
           which task
           task --version
