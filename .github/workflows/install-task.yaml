@@ -40,7 +40,7 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       TASK_VERSION: v3.44.0
-      TASK_BIN_DIR: /usr/bin/task
+      TASK_BIN_DIR: /usr/local/bin
     steps:
       - name: Restore Task from cache
         id: cache-task
