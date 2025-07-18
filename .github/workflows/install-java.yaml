@@ -22,6 +22,7 @@ jobs:
           which java
           java -version
 
+  # If you need a different version, it will either download every time from upstream
   official-setup-java-21-0-6:
     runs-on: ubuntu-24.04
     steps:
@@ -33,6 +34,7 @@ jobs:
           which java
           java -version
 
+  # ...or you can cache/restore after the first run
   official-setup-java-21-0-6-cache:
     runs-on: ubuntu-24.04
     env:
@@ -53,3 +55,14 @@ jobs:
       - run: |
           which java
           java -version
+
+  # ...with the default GHA cache, this isnt any faster than downloading from upstream
+  # but if we use namespace cache volumes...
+  official-setup-java-21-0-6-namespace-cache:
+    runs-on: namespace-profile-default
+    steps:
+      - run: echo hello
+
+  # could also use a container image...
+
+  # or a custom namespace runner image
