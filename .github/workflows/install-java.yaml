@@ -26,18 +26,20 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.6-7.0.LTS/x64
-      CACHE_KEY: jdk-21.0.6-${{ runner.os }}-${{ runner.arch }}
     steps:
       - name: Restore Java from cache
         id: cache-task
         uses: actions/cache@v4
         with:
           path: ${{ env.JAVA_HOME }}
-          key: ${{ env.CACHE_KEY }}
+          key: jdk-21.0.6-${{ runner.os }}-${{ runner.arch }}
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
           java-version: "21.0.6" # Will require downloading
+
+      - run: echo "${{ env.JAVA_HOME }}/bin" >> "$GITHUB_PATH"
+
       - run: |
           which java
           java -version
