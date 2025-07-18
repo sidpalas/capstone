@@ -27,6 +27,7 @@ jobs:
     env:
       JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.6-7.0.LTS/x64
     steps:
+      - run: echo "${{ env.JAVA_HOME }}/bin" >> "$GITHUB_PATH"
       - name: Restore Java from cache
         id: cache-task
         uses: actions/cache@v4
@@ -37,9 +38,6 @@ jobs:
         with:
           distribution: "temurin"
           java-version: "21.0.6" # Will require downloading
-
-      - run: echo "${{ env.JAVA_HOME }}/bin" >> "$GITHUB_PATH"
-
       - run: |
           which java
           java -version
