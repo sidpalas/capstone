@@ -56,9 +56,26 @@ jobs:
           which java
           java -version
 
+  # # ...with the default GHA cache, this isnt any faster than downloading from upstream
+  # # but if we use namespace cache volumes with their toolchain caching functionality...
+  # java-21-0-6-namespace-cache-volume:
+  #   runs-on: namespace-profile-custom-image
+  #   steps:
+  #     - uses: actions/setup-java@v4
+  #       with:
+  #         distribution: "temurin"
+  #         java-version: "21.0.6"
+  #     - run: |
+  #         which java
+  #         java -version
+
+  # could also use a container image...
+  # TODO
+
+  # or a custom namespace runner image
   # ...with the default GHA cache, this isnt any faster than downloading from upstream
   # but if we use namespace cache volumes with their toolchain caching functionality...
-  java-21-0-6-namespace-cache-volume:
+  java-21-0-6-namespace-custom-image:
     runs-on: namespace-profile-custom-image
     steps:
       - uses: actions/setup-java@v4
@@ -68,7 +85,3 @@ jobs:
       - run: |
           which java
           java -version
-
-  # could also use a container image...
-
-  # or a custom namespace runner image
