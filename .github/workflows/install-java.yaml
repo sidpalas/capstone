@@ -1,4 +1,4 @@
-name: Install Task
+name: Install Java
 
 on:
   push:
