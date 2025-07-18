@@ -15,5 +15,18 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           distribution: "temurin"
-          java-version: "21"
-      - run: java -version
+          java-version: "21" # Will use version preinstalled in runner image tool cache https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md
+      - run: |
+          which java
+          java -version
+
+  official-setup-java-21-0-6:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21.0.6" # Will require downloading
+      - run: |
+          which java
+          java -version
