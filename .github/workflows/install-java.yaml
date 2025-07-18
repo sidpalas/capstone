@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - sp/tool-cache-experiments
+    paths:
+      - .github/workflows/install-java.yaml
   workflow_dispatch:
 
 jobs:
