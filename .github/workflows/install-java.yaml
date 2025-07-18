@@ -11,7 +11,7 @@ on:
 #
 
 jobs:
-  official-setup-java-21:
+  java-21-preinstalled:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/setup-java@v4
@@ -23,7 +23,7 @@ jobs:
           java -version
 
   # If you need a different version, it will either download every time from upstream
-  official-setup-java-21-0-6:
+  java-21-0-6-no-cache:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/setup-java@v4
@@ -35,7 +35,7 @@ jobs:
           java -version
 
   # ...or you can cache/restore after the first run
-  official-setup-java-21-0-6-cache:
+  java-21-0-6-gha-cache:
     runs-on: ubuntu-24.04
     env:
       JDK_DIR: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.6-7.0.LTS
@@ -57,8 +57,8 @@ jobs:
           java -version
 
   # ...with the default GHA cache, this isnt any faster than downloading from upstream
-  # but if we use namespace cache volumes...
-  official-setup-java-21-0-6-namespace-cache:
+  # but if we use namespace cache volumes with their toolchain caching functionality...
+  java-21-0-6-namespace-cache-volume:
     runs-on: namespace-profile-custom-image
     steps:
       - uses: actions/setup-java@v4
