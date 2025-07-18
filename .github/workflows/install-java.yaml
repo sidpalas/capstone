@@ -24,6 +24,17 @@ jobs:
 
   official-setup-java-21-0-6:
     runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21.0.6"
+      - run: |
+          which java
+          java -version
+
+  official-setup-java-21-0-6-cache:
+    runs-on: ubuntu-24.04
     env:
       JDK_DIR: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.6-7.0.LTS
     steps:
