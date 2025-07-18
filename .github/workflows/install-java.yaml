@@ -25,7 +25,7 @@ jobs:
   official-setup-java-21-0-6:
     runs-on: ubuntu-24.04
     env:
-      JAVA_BIN_DIR: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.6-7.0.LTS/x64/bin
+      JAVA_BIN_DIR: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.6-7.0.LTS/x64/bin/java
     steps:
       - name: Restore Java from cache
         id: cache-task
