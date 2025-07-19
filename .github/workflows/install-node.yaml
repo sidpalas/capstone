@@ -1,0 +1,22 @@
+name: Install Node.js
+
+on:
+  push:
+    branches:
+      - sp/initial-workflow-development
+    paths:
+      - .github/workflows/install-java.yaml
+  workflow_dispatch:
+
+jobs:
+  preinstalled:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          # https://github.com/actions/runner-images/blob/e27dbcbe29b9aca81b42c4637ed9b412d3674f51/images/ubuntu/Ubuntu2404-Readme.md?plain=1#L23
+          # 20.19.3 is preinstalled (as of 2025-07-19)
+          node-version: 20
+      - run: |
+          which node
+          node -v
