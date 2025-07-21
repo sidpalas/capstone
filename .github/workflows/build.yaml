@@ -1,0 +1,21 @@
+name: Build Container Images
+
+on:
+  push:
+    branches:
+      - sp/tool-cache-experiments
+  workflow_dispatch:
+
+jobs:
+  services-changed:
+    runs-on: ubuntu-24.04
+    outputs:
+      go_services: ${{ steps.services-changed.outputs.go_services }}
+      node_services: ${{ steps.services-changed.outputs.node_services }}
+      python_services: ${{ steps.services-changed.outputs.python_services }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/services-changed
+        id: services-changed
+        with:
+          github-token: $${{ github.token }}

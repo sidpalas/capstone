@@ -1,13 +1,26 @@
 # This is used by the action https://github.com/dorny/paths-filter
 
-go/api-golang:
+# Filters for splitting test jobs
+
+go/api-golang: &go__api_golang
   - "go/api-golang/**"
 
-node/api-node:
+node/api-node: &node__api_node
   - "node/api-node/**"
 
-python/load-generator-python:
+python/load-generator-python: &python__load_generator_python
   - "python/load-generator-python/**"
 
-react/client-react:
+react/client-react: &react__client_react
   - "react/client-react/**"
+
+# Filters for splitting build jobs
+
+standard_container_build:
+  - *node__api_node
+  - *python__load_generator_python
+  - *react__client_react
+
+# we separate out the golang projects to ensure ko is installed
+ko_container_build:
+  - *go__api_golang
