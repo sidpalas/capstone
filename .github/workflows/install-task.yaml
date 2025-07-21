@@ -9,83 +9,12 @@ on:
   workflow_dispatch:
 
 jobs:
-  install-task-manual:
-    runs-on: ubuntu-24.04
-    env:
-      TASK_VERSION: v3.44.0
-    steps:
-      - name: Generate install directory
-        # It doesn't actually matter if we install into the tool cache... but it is the convention used
-        run: |
-          echo "TASK_BIN_DIR=${RUNNER_TOOL_CACHE}/task/${TASK_VERSION}/${RUNNER_ARCH}" >> "$GITHUB_ENV"
-      - name: Restore Task from cache
-        id: cache-task
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.TASK_BIN_DIR }}
-          key: task-${{ runner.arch }}-${{ runner.os }}-${{ env.TASK_VERSION }}
-      - name: Install Task (cache miss)
-        if: steps.cache-task.outputs.cache-hit != 'true'
-        run: |
-          mkdir -p "${TASK_BIN_DIR}"
-          curl -sL https://taskfile.dev/install.sh | \
-            sh -s -- -d -b "${TASK_BIN_DIR}" ${TASK_VERSION}
-      - name: Add TASK_BIN_DIR to path (cache hit)
-        if: steps.cache-task.outputs.cache-hit == 'true'
-        run: |
-          echo "${TASK_BIN_DIR}" >> "$GITHUB_PATH"
-      - run: |
-          which task
-          task --version
-
-  install-task-illbjorn:
-    # composite action (doesn't cache)
+  install-task-composite:
     runs-on: ubuntu-24.04
     steps:
-      - name: Setup Task
-        uses: illbjorn/setup-task@178d62406bf0554c24e1bd76d1e4d8e94fc0a638 # v0.1.0
+      - uses: actions/checkout@v4
+      - uses: /.github/actions/install-task.yaml
         with:
-          task_version: v3.44.0
-          # bin_dir: /opt/hostedtoolcache/task/3.44.0/x64 # TODO: generate dynamically... setting bin_dir also doesn't impact where it gets installed
-      - run: |
-          which task
-          task --version
-
-  install-task-rnorton5432:
-    # uses toolCache properly... (but that doesnt persist across ephemeral runners)
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Setup Task
-        uses: rnorton5432/setup-task@eec4717ae80f02d1614a4fecfa4a55d507768696 # v1.0.0
-        with:
-          task-version: 3.44.0
-      - run: |
-          which task
-          task --version
-
-  install-task-arkade:
-    runs-on: ubuntu-24.04
-    steps:
-      - uses: alexellis/arkade-get@1eef818e467c387d3f50cfe0d2c565d1cbe82b03 # master as of 2025-06-30
-        with:
-          task: v3.44.0
-      - run: |
-          which task
-          task --version
-
-  install-task-setup-bin:
-    runs-on: ubuntu-24.04
-    steps:
-      # uses toolCache properly... (but that doesnt persist across ephemeral runners)
-      - name: Clear any existing tool cache
-        run: |
-          mv "${{ runner.tool_cache }}" "${{ runner.tool_cache }}.old"
-          mkdir -p "${{ runner.tool_cache }}"
-      # Is there a way to know the install path apriori?
-      - uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
-        with:
-          uri: "https://github.com/go-task/task/releases/download/v3.44.0/task_linux_amd64.tar.gz"
-          name: "task"
           version: "v3.44.0"
       - run: |
           which task

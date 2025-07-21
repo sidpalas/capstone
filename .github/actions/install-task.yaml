@@ -1,0 +1,14 @@
+name: "Install Task"
+description: "Install Task using setup-bin"
+inputs:
+  version:
+    description: "version of task to install"
+    default: "v3.44.0"
+runs:
+  using: "composite"
+  steps:
+    - uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
+      with:
+        uri: "https://github.com/go-task/task/releases/download/${{ inputs.version }}/task_linux_amd64.tar.gz"
+        name: task
+        version: ${{ inputs.version }}
