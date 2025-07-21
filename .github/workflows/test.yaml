@@ -1,0 +1,50 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - sp/tool-cache-experiments
+  workflow_dispatch:
+
+jobs:
+  files-changed:
+    runs-on: ubuntu-24.04
+    outputs:
+      go__api_golang: ${{ steps.changes.outputs.go__api_golang }}
+      node__api_node: ${{ steps.changes.outputs.node__api_node }}
+    steps:
+      - uses: actions/checkout@v4
+      # Because this is a mono-repo, we must determine which applications have changed
+      - name: Paths Changes Filter
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        with:
+          token: ${{ github.token }}
+          filters: .github/utils/file-filters.yaml
+
+  # Two options:
+  # 1. have a job for each language and setup the toolchain locally
+  # 2. have a matrix job that runs everything and handle it all inside of containers...
+
+  go-tests:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        go-version: [1, 2]
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "TODO: detemine go version to use"
+      - uses: actions/setup-go@v5.5.0
+        with:
+          go-version: "${{ matrix.go-version }}"
+
+  # node-tests:
+  #   runs-on: ubuntu-24.04
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: ./.github/actions/install-task
+  #       with:
+  #         version: "v3.44.0"
+  #     - run: |
+  #         which task
+  #         task --version
