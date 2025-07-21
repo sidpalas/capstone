@@ -48,7 +48,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5.5.0
         with:
-          go-version-file: ${{ matrix.service }}/go.mod
+          go-version-file: ./${{ matrix.service }}/go.mod
 
   # node-tests:
   #   runs-on: ubuntu-24.04
