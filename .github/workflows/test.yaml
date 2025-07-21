@@ -10,35 +10,15 @@ jobs:
   services-changed:
     runs-on: ubuntu-24.04
     outputs:
-      go_services: ${{ steps.matrices.outputs.go_services }}
-      node_services: ${{ steps.matrices.outputs.node_services }}
-      python_services: ${{ steps.matrices.outputs.python_services }}
+      go_services: ${{ steps.services-changed.outputs.go_services }}
+      node_services: ${{ steps.services-changed.outputs.node_services }}
+      python_services: ${{ steps.services-changed.outputs.python_services }}
     steps:
       - uses: actions/checkout@v4
-      # Because this is a mono-repo, we must determine which applications have changed
-      - name: Paths Changes Filter
-        id: filter
-        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+      - uses: ./.github/actions/services-changed
+        id: services-changed
         with:
-          token: ${{ github.token }}
-          filters: .github/utils/${{ matrix.language }}file-filters.yaml
-      - name: Generate matrices
-        id: matrices
-        shell: bash
-        run: |
-          # TODO: move this logic out of inline script
-          set -euo pipefail
-
-          # `changes` is a JSON array of filter names that matched any file
-          filters='${{ steps.filter.outputs.changes }}'
-
-          go_json=$(jq -c '[ .[] | select(startswith("go/")) ]'   <<<"$filters")
-          node_json=$(jq -c '[ .[] | select(startswith("node/") or startswith("react/")) ]'<<<"$filters")
-          python_json=$(jq -c '[ .[] | select(startswith("python/")) ]'<<<"$filters")
-
-          echo "go_services=$go_json"   >>"$GITHUB_OUTPUT"
-          echo "node_services=$node_json" >>"$GITHUB_OUTPUT"
-          echo "python_services=$python_json" >>"$GITHUB_OUTPUT"
+          github-token: $${{ github.token }}
 
   go-tests:
     runs-on: ubuntu-24.04
@@ -49,7 +29,7 @@ jobs:
         service: ${{ fromJson(needs.services-changed.outputs.go_services) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/install-task
+      - uses: ./.github/actions/setup-task
         with:
           version: "v3.44.0"
       - uses: actions/setup-go@v5.5.0
@@ -65,7 +45,7 @@ jobs:
         service: ${{ fromJson(needs.services-changed.outputs.node_services) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/install-task
+      - uses: ./.github/actions/setup-task
         with:
           version: "v3.44.0"
       - uses: actions/setup-node@v4
@@ -81,7 +61,7 @@ jobs:
         service: ${{ fromJson(needs.services-changed.outputs.python_services) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/install-task
+      - uses: ./.github/actions/setup-task
         with:
           version: "v3.44.0"
       - uses: actions/setup-python@v5
