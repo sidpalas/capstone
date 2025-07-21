@@ -1,13 +1,7 @@
 # This is used by the action https://github.com/dorny/paths-filter
 
-go_all:
-  - "go/**"
-
-go__api_golang:
+go/api-golang:
   - "go/api-golang/**"
 
-node_all:
-  - "node/**"
-
-node__api_node:
+node/api-node:
   - "node/api-node/**"
