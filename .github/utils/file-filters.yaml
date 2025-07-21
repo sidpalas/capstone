@@ -5,3 +5,9 @@ go/api-golang:
 
 node/api-node:
   - "node/api-node/**"
+
+python/load-generator-python:
+  - "python/load-generator-python/**"
+
+react/client-react:
+  - "react/client-react/**"
