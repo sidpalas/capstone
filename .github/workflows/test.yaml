@@ -46,20 +46,23 @@ jobs:
         service: ${{ fromJson(needs.changes.outputs.go_services) }}
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/install-task
+        with:
+          version: "v3.44.0"
       - uses: actions/setup-go@v5.5.0
         with:
           go-version-file: ./${{ matrix.service }}/go.mod
 
-  # node-tests:
-  #   runs-on: ubuntu-24.04
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: ./.github/actions/install-task
-  #       with:
-  #         version: "v3.44.0"
-  #     - run: |
-  #         which task
-  #         task --version
+  node-tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/install-task
+        with:
+          version: "v3.44.0"
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: ./${{ matrix.service }}/package.json
 
   # Two options:
   # 1. have a job for each language and setup the toolchain locally
