@@ -12,6 +12,7 @@ jobs:
     outputs:
       go_services: ${{ steps.matrices.outputs.go_services }}
       node_services: ${{ steps.matrices.outputs.node_services }}
+      python_services: ${{ steps.matrices.outputs.python_services }}
     steps:
       - uses: actions/checkout@v4
       # Because this is a mono-repo, we must determine which applications have changed
@@ -32,10 +33,12 @@ jobs:
           filters='${{ steps.filter.outputs.changes }}'
 
           go_json=$(jq -c '[ .[] | select(startswith("go/")) ]'   <<<"$filters")
-          node_json=$(jq -c '[ .[] | select(startswith("node/")) ]'<<<"$filters")
+          node_json=$(jq -c '[ .[] | select(startswith("node/") or startswith("react/")) ]'<<<"$filters")
+          python_json=$(jq -c '[ .[] | select(startswith("python/")) ]'<<<"$filters")
 
           echo "go_services=$go_json"   >>"$GITHUB_OUTPUT"
           echo "node_services=$node_json" >>"$GITHUB_OUTPUT"
+          echo "python_services=$python_json" >>"$GITHUB_OUTPUT"
 
   go-tests:
     runs-on: ubuntu-24.04
@@ -69,6 +72,18 @@ jobs:
         with:
           node-version-file: ./${{ matrix.service }}/package.json
 
-  # Two options:
-  # 1. have a job for each language and setup the toolchain locally
-  # 2. have a matrix job that runs everything and handle it all inside of containers...
+  python-tests:
+    runs-on: ubuntu-24.04
+    if: ${{ needs.changes.outputs.python_services != '[]' && needs.changes.outputs.python_services != '' }}
+    needs: changes
+    strategy:
+      matrix:
+        service: ${{ fromJson(needs.changes.outputs.python_services) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/install-task
+        with:
+          version: "v3.44.0"
+      - uses: actions/setup-python@v5
+        with:
+          python-version-file: ./${{ matrix.service }}/pyproject.toml
