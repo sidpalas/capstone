@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  changes:
+  services-changed:
     runs-on: ubuntu-24.04
     outputs:
       go_services: ${{ steps.matrices.outputs.go_services }}
@@ -42,11 +42,11 @@ jobs:
 
   go-tests:
     runs-on: ubuntu-24.04
-    if: ${{ needs.changes.outputs.go_services != '[]' && needs.changes.outputs.go_services != '' }}
-    needs: changes
+    if: ${{ needs.services-changed.outputs.go_services != '[]' && needs.services-changed.outputs.go_services != '' }}
+    needs: services-changed
     strategy:
       matrix:
-        service: ${{ fromJson(needs.changes.outputs.go_services) }}
+        service: ${{ fromJson(needs.services-changed.outputs.go_services) }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/install-task
@@ -58,11 +58,11 @@ jobs:
 
   node-tests:
     runs-on: ubuntu-24.04
-    if: ${{ needs.changes.outputs.node_services != '[]' && needs.changes.outputs.node_services != '' }}
-    needs: changes
+    if: ${{ needs.services-changed.outputs.node_services != '[]' && needs.services-changed.outputs.node_services != '' }}
+    needs: services-changed
     strategy:
       matrix:
-        service: ${{ fromJson(needs.changes.outputs.node_services) }}
+        service: ${{ fromJson(needs.services-changed.outputs.node_services) }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/install-task
@@ -74,11 +74,11 @@ jobs:
 
   python-tests:
     runs-on: ubuntu-24.04
-    if: ${{ needs.changes.outputs.python_services != '[]' && needs.changes.outputs.python_services != '' }}
-    needs: changes
+    if: ${{ needs.services-changed.outputs.python_services != '[]' && needs.services-changed.outputs.python_services != '' }}
+    needs: services-changed
     strategy:
       matrix:
-        service: ${{ fromJson(needs.changes.outputs.python_services) }}
+        service: ${{ fromJson(needs.services-changed.outputs.python_services) }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/install-task
