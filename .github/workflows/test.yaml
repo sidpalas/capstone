@@ -31,8 +31,8 @@ jobs:
           # `changes` is a JSON array of filter names that matched any file
           filters='${{ steps.filter.outputs.changes }}'
 
-          go_json=$(jq '[ .[] | select(startswith("go/")) ]'  <<<"$filters")
-          node_json=$(jq '[ .[] | select(startswith("node/")) ]'<<<"$filters")
+          go_json=$(jq -c '[ .[] | select(startswith("go/")) ]'   <<<"$filters")
+          node_json=$(jq -c '[ .[] | select(startswith("node/")) ]'<<<"$filters")
 
           echo "go_services=$go_json"   >>"$GITHUB_OUTPUT"
           echo "node_services=$node_json" >>"$GITHUB_OUTPUT"
