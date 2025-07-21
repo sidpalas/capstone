@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       go_services: ${{ steps.matrices.outputs.go_services }}
-      node_services: ${{ steps.matrices.outputs.go_services }}
+      node_services: ${{ steps.matrices.outputs.node_services }}
     steps:
       - uses: actions/checkout@v4
       # Because this is a mono-repo, we must determine which applications have changed
