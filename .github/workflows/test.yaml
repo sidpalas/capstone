@@ -55,6 +55,11 @@ jobs:
 
   node-tests:
     runs-on: ubuntu-24.04
+    if: ${{ needs.changes.outputs.node_services != '[]' && needs.changes.outputs.node_services != '' }}
+    needs: changes
+    strategy:
+      matrix:
+        service: ${{ fromJson(needs.changes.outputs.node_services) }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/install-task
