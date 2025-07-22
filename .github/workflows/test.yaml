@@ -33,7 +33,11 @@ jobs:
       - uses: ./.github/actions/setup-dependencies
         with:
           install_task: "true"
+          install_go: ${{ startsWith(matrix.service, 'go/') }}
+          install_node: ${{ startsWith(matrix.service, 'node/') || startsWith(matrix.service, 'react/') }}
+          install_python: ${{ startsWith(matrix.service, 'python/') }}
           service_path: ${{ matrix.service }}
-      - working-directory: ${{ matrix.service }}
+      - name: run tests
+        working-directory: ${{ matrix.service }}
         run: |
           task test
