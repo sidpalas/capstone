@@ -27,6 +27,7 @@ jobs:
     strategy:
       matrix:
         service: ${{ fromJson(needs.filter.outputs.services) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
