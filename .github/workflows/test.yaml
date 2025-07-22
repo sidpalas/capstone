@@ -34,3 +34,6 @@ jobs:
         with:
           install_task: "true"
           service_path: ${{ matrix.service }}
+      - working-directory: ${{ matrix.service }}
+        run: |
+          task test

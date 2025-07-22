@@ -37,3 +37,5 @@ runs:
       uses: actions/setup-python@v5
       with:
         python-version-file: ./${{ inputs.service_path }}/pyproject.toml
+
+    # TODO: add namespace setup steps
