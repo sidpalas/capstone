@@ -2,38 +2,38 @@ name: "Setup Dependencies"
 description: "Setup tools/dependencies"
 inputs:
   # Task
-  install-task:
+  install_task:
     description: "install task if true"
     default: "true"
-  task-version:
+  task_version:
     description: "version of task to install"
     default: "v3.44.0"
 
-  service-path:
+  service_path:
     description: "path to service within repo"
-    required: true
+    default: ""
 
 runs:
   using: "composite"
   steps:
-    - if: ${{ inputs.install-task == "true" }}
+    - if: ${{ inputs.install_task == "true" }}
       uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
       with:
         uri: "https://github.com/go-task/task/releases/download/${{ inputs.version }}/task_linux_amd64.tar.gz"
         name: task
         version: ${{ inputs.version }}
 
-    - if: ${{ startsWith(inputs.service-path, "go/") }}
+    - if: ${{ startsWith(inputs.service_path, "go/") }}
       uses: actions/setup-go@v5.5.0
       with:
-        go-version-file: ./${{ inputs.service-path }}/go.mod
+        go-version-file: ./${{ inputs.service_path }}/go.mod
 
-    - if: ${{ startsWith(inputs.service-path, "node/") || startsWith(inputs.service-path, "react/") }}
+    - if: ${{ startsWith(inputs.service_path, "node/") || startsWith(inputs.service_path, "react/") }}
       uses: actions/setup-node@v4
       with:
-        node-version-file: ./${{ inputs.service-path }}/package.json
+        node-version-file: ./${{ inputs.service_path }}/package.json
 
-    - if: ${{startsWith(inputs.service-path, "python") }}
+    - if: ${{startsWith(inputs.service_path, "python") }}
       uses: actions/setup-python@v5
       with:
-        python-version-file: ./${{ inputs.service-path }}/pyproject.toml
+        python-version-file: ./${{ inputs.service_path }}/pyproject.toml

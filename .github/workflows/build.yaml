@@ -32,4 +32,3 @@ jobs:
       - uses: ./.github/actions/setup-dependencies
         with:
           install-task: "true"
-          service-path: "no language setup needed for container build"
