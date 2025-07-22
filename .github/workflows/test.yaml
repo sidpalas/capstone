@@ -7,63 +7,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  services-changed:
+  filter:
     runs-on: ubuntu-24.04
     outputs:
-      go_services: ${{ steps.services-changed.outputs.go_services }}
-      node_services: ${{ steps.services-changed.outputs.node_services }}
-      python_services: ${{ steps.services-changed.outputs.python_services }}
+      services: ${{ steps.filter.outputs.changes }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/services-changed
-        id: services-changed
+      - name: Paths Changes Filter
+        id: filter
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
         with:
-          github-token: $${{ github.token }}
+          token: ${{ github.token }}
+          filters: .github/utils/file-filters.yaml
 
-  go-tests:
+  run-tests:
     runs-on: ubuntu-24.04
-    if: ${{ needs.services-changed.outputs.go_services != '[]' && needs.services-changed.outputs.go_services != '' }}
-    needs: services-changed
+    if: ${{ needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '' }}
+    needs: filter
     strategy:
       matrix:
-        service: ${{ fromJson(needs.services-changed.outputs.go_services) }}
+        service: ${{ fromJson(needs.filter.outputs.services) }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-task
+      - uses: ./.github/actions/setup-dependencies
         with:
-          version: "v3.44.0"
-      - uses: actions/setup-go@v5.5.0
-        with:
-          go-version-file: ./${{ matrix.service }}/go.mod
-
-  node-tests:
-    runs-on: ubuntu-24.04
-    if: ${{ needs.services-changed.outputs.node_services != '[]' && needs.services-changed.outputs.node_services != '' }}
-    needs: services-changed
-    strategy:
-      matrix:
-        service: ${{ fromJson(needs.services-changed.outputs.node_services) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-task
-        with:
-          version: "v3.44.0"
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: ./${{ matrix.service }}/package.json
-
-  python-tests:
-    runs-on: ubuntu-24.04
-    if: ${{ needs.services-changed.outputs.python_services != '[]' && needs.services-changed.outputs.python_services != '' }}
-    needs: services-changed
-    strategy:
-      matrix:
-        service: ${{ fromJson(needs.services-changed.outputs.python_services) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup-task
-        with:
-          version: "v3.44.0"
-      - uses: actions/setup-python@v5
-        with:
-          python-version-file: ./${{ matrix.service }}/pyproject.toml
+          install-task: "true"
+          service-path: ${{ matrix.service }}
