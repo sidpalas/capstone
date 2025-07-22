@@ -1,0 +1,6 @@
+{
+  "services/go/api-golang": "0.0.1",
+  "services/node/api-node": "0.0.1",
+  "services/python/load-generator-python": "0.0.1",
+  "services/react/client-react": "0.0.1"
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "bootstrap-sha": "2c8ede4d9cab29de4f41ddacf0a5b07e6415ca65",
+  "include-component-in-tag": true,
+  "include-v-in-tag": false,
+  "bump-minor-pre-major": true,
+  "packages": {
+    "go/api-golang": {
+      "component": "services/go/api-golang"
+    },
+    "node/api-node": {
+      "component": "services/node/api-node"
+    },
+    "python/load-generator-python": {
+      "component": "services/node/load-generator-python"
+    },
+    "react/client-react": {
+      "component": "services/react/client-react"
+    }
+  },
+  "release-type": "simple",
+  "separate-pull-requests": false,
+  "tag-separator": "@",
+  "changelog-sections": [
+    {
+      "type": "feat",
+      "section": "Features"
+    },
+    {
+      "type": "fix",
+      "section": "Bug Fixes"
+    },
+    {
+      "type": "chore",
+      "section": "Chores"
+    },
+    {
+      "type": "revert",
+      "section": "Reverts"
+    }
+  ]
+}

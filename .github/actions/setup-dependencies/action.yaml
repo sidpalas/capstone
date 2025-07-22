@@ -34,7 +34,7 @@ runs:
         version: ${{ inputs.task_version }}
 
     - if: ${{ inputs.install_go == 'true' }}
-      uses: actions/setup-go@v5.5.0
+      uses: actions/setup-go@v5
       with:
         go-version-file: ./${{ inputs.service_path }}/go.mod
 

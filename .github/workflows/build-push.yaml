@@ -3,7 +3,7 @@ name: Build and Push Container Images
 on:
   push:
     branches:
-      - sp/tool-cache-experiments
+      - main
   workflow_dispatch:
 
 jobs:
@@ -33,4 +33,6 @@ jobs:
       - uses: ./.github/actions/setup-dependencies
         with:
           install_task: "true"
+
+      # TODO: generate tags
       # TODO: add docker build-push action

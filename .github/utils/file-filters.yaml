@@ -13,3 +13,5 @@ python/load-generator-python:
 
 react/client-react:
   - "react/client-react/**"
+
+# This is effectively serving as a naive target determinator (see: https://blog.swgillespie.me/posts/monorepo-ingredients/)
