@@ -21,19 +21,19 @@ runs:
       with:
         uri: "https://github.com/go-task/task/releases/download/${{ inputs.version }}/task_linux_amd64.tar.gz"
         name: task
-        version: ${{ inputs.version }}
+        version: ${{ inputs.task_version }}
 
-    - if: ${{ startsWith(inputs.service_path, "go/") }}
+    - if: ${{ startsWith(inputs.service_path, 'go/') }}
       uses: actions/setup-go@v5.5.0
       with:
         go-version-file: ./${{ inputs.service_path }}/go.mod
 
-    - if: ${{ startsWith(inputs.service_path, "node/") || startsWith(inputs.service_path, "react/") }}
+    - if: ${{ startsWith(inputs.service_path, 'node/') || startsWith(inputs.service_path, 'react/') }}
       uses: actions/setup-node@v4
       with:
         node-version-file: ./${{ inputs.service_path }}/package.json
 
-    - if: ${{startsWith(inputs.service_path, "python") }}
+    - if: ${{startsWith(inputs.service_path, 'python/') }}
       uses: actions/setup-python@v5
       with:
         python-version-file: ./${{ inputs.service_path }}/pyproject.toml

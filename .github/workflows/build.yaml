@@ -31,4 +31,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-dependencies
         with:
-          install-task: "true"
+          install_task: "true"
