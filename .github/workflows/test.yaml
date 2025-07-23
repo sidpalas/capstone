@@ -2,10 +2,9 @@ name: Run Tests
 
 on:
   # NOTE: Disabling for now while iterating on other workflows...
-  push:
-    branches:
-      #     - main
-      - sp/add-postgres-test-build
+  # push:
+  #   branches:
+  #     - main
   workflow_dispatch:
 
 jobs:
