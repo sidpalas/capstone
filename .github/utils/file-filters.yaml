@@ -1,5 +1,7 @@
 # This is used by the action https://github.com/dorny/paths-filter
 
+# This is effectively serving as a naive target determinator (see: https://blog.swgillespie.me/posts/monorepo-ingredients/)
+
 # Filters for splitting test jobs
 
 go/api-golang:
@@ -8,10 +10,11 @@ go/api-golang:
 node/api-node:
   - "node/api-node/**"
 
+other/postgresql:
+  - "other/postgresql"
+
 python/load-generator-python:
   - "python/load-generator-python/**"
 
 react/client-react:
   - "react/client-react/**"
-
-# This is effectively serving as a naive target determinator (see: https://blog.swgillespie.me/posts/monorepo-ingredients/)

@@ -33,3 +33,8 @@ tasks:
         -t {{.IMAGE_REPO}}:{{.IMAGE_TAG}} \
         --push \
         .
+
+  test:
+    desc: run tests
+    cmds:
+      - echo "TODO... actually run the tests" # run the migrations (either in a container or not...)? https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#postgresql
