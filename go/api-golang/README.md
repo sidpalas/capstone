@@ -1,3 +1,7 @@
+# go api
+
+## Local setup/run
+
 ```bash
 mkdir go-workspace
 export GOPATH=$PWD/go-workspace
