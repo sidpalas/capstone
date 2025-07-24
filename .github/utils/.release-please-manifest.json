@@ -2,5 +2,9 @@
   "services/go/api-golang": "0.0.1",
   "services/node/api-node": "0.0.1",
   "services/python/load-generator-python": "0.0.1",
-  "services/react/client-react": "0.0.1"
+  "services/react/client-react": "0.0.1",
+  "go/api-golang": "1.0.0",
+  "node/api-node": "1.0.0",
+  "python/load-generator-python": "0.1.0",
+  "react/client-react": "1.0.0"
 }
