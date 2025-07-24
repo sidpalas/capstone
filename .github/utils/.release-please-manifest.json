@@ -1,7 +1,7 @@
 {
-  "services/go/api-golang": "1.0.0",
-  "services/node/api-node": "1.0.0",
-  "services/python/load-generator-python": "0.1.0",
-  "services/react/client-react": "1.0.0",
-  "services/other/postgresql": "1.0.0"
+  "services/go/api-golang": "1.0.1",
+  "services/node/api-node": "1.0.1",
+  "services/python/load-generator-python": "0.1.1",
+  "services/react/client-react": "1.0.1",
+  "services/other/postgresql": "1.0.1"
 }
