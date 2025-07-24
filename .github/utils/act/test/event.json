@@ -1,6 +1,5 @@
 {
-  "ref": "refs/heads/main",
-  "repository": {
-    "default_branch": "main"
+  "pull_request": {
+    "number": 9
   }
 }

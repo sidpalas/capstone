@@ -25,6 +25,16 @@
       "release-type": "node"
     }
   },
+  "plugins": [
+    {
+      "type": "linked-versions",
+      "groupName": "apis-and-db",
+      "components": [
+        "services/go/api-golang",
+        "services/other/postgresql"
+      ]
+    }
+  ],
   "release-type": "simple",
   "separate-pull-requests": false,
   "tag-separator": "@",
