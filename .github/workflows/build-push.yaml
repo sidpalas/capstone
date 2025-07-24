@@ -5,7 +5,6 @@ on:
   push:
     branches:
       - main
-      - sp/add-deploy-workflow
   workflow_dispatch:
 
 permissions:
@@ -58,6 +57,7 @@ jobs:
           push: false
           tags: foobarbaz
           # TODO setup caching
+          platforms: linux/amd64
 
       # Trigger deploy as a separate workflow to:
       #   1. enable running it manually via workflow_dispatch
