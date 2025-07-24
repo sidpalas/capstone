@@ -2,5 +2,6 @@
   "go/api-golang": "1.0.0",
   "node/api-node": "1.0.0",
   "python/load-generator-python": "0.1.0",
-  "react/client-react": "1.0.0"
+  "react/client-react": "1.0.0",
+  "other/postgresql": "1.0.0"
 }
