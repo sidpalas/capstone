@@ -1,7 +1,7 @@
 GITHUB_TOKEN := $(shell gh auth token)
 
 # Expects HONEYCOMB_OTLP_HEADERS to be defined in .secrets file
-trigger-workflow-export-timing-data:
+trigger-workflow:
 	act workflow_run \
 		--container-architecture linux/amd64 \
 		-s GITHUB_TOKEN="$(GITHUB_TOKEN)" \

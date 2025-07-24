@@ -17,9 +17,9 @@ on:
         required: true
         type: choice
         options:
-          - dev
+          - development
           - staging
-          - prod
+          - production
 
 jobs:
   update-manifests:
