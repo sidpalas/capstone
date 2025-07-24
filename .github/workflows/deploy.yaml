@@ -1,0 +1,30 @@
+name: Deploy Service to Environment
+
+on:
+  workflow_dispatch:
+    inputs:
+      service:
+        description: "Path to the service to deploy (go/api-golang)"
+        required: true
+        type: string
+      version:
+        description: "Image tag of the version to deploy"
+        required: true
+        type: string
+      environment:
+        description: "Target environment to deploy to"
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+
+jobs:
+  update-manifests:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: |
+          echo ${{ inputs.service }}
+          echo ${{ inputs.version }}
+          echo ${{ inputs.environment }}

@@ -2,10 +2,15 @@ name: Build and Push Container Images
 
 on:
   # NOTE: Disabling for now while iterating on other workflows...
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
+      - sp/add-deploy-workflow
   workflow_dispatch:
+
+permissions:
+  actions: write # used to trigger deploy workflow
+  contents: read
 
 jobs:
   filter:
@@ -53,3 +58,16 @@ jobs:
           push: false
           tags: foobarbaz
           # TODO setup caching
+
+      # Trigger deploy as a separate workflow to:
+      #   1. enable running it manually via workflow_dispatch
+      #   2. keep workflows smaller and more focused
+      - name: Trigger Deploy
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run deploy \
+            -f service=${{ matrix.service }} \
+            -f version="TODO: REPLACE ME" \
+            -f environment="prod" \
+            -r ${GITHUB_REF}
