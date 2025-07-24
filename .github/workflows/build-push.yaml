@@ -66,7 +66,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run deploy \
+          gh workflow run deploy.yaml \
             -f service=${{ matrix.service }} \
             -f version="TODO: REPLACE ME" \
             -f environment="prod" \
