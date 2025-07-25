@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.0.1...services/go/api-golang@1.1.0) (2025-07-25)
+
+
+### Features
+
+* link api-golang and db migration versions ([#10](https://github.com/sidpalas/capstone/issues/10)) ([14d20d8](https://github.com/sidpalas/capstone/commit/14d20d8be7825bed576fd133a0ea553d28633293))
+
 ## [1.0.1](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.0.0...services/go/api-golang@1.0.1) (2025-07-24)
 
 
