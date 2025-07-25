@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/sidpalas/capstone/compare/services/other/postgresql@1.1.0...services/other/postgresql@1.1.1) (2025-07-25)
+
+
+### Chores
+
+* **services/other/postgresql:** Synchronize apis-and-db versions
+
 ## [1.1.0](https://github.com/sidpalas/capstone/compare/services/other/postgresql@1.0.1...services/other/postgresql@1.1.0) (2025-07-25)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.1.0...services/go/api-golang@1.1.1) (2025-07-25)
+
+
+### Chores
+
+* change to trigger api-golang build and release ([1e06bfb](https://github.com/sidpalas/capstone/commit/1e06bfbdcbb76a5be7bf59fb6d74305f0e3af79b))
+
 ## [1.1.0](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.0.1...services/go/api-golang@1.1.0) (2025-07-25)
 
 
