@@ -9,8 +9,6 @@ spec:
     git:
       url: https://github.com/sidpalas/devops-directive-github-actions-course.git
       path: deploy/kubernetes/kluctl
-      ref:
-        branch: sp/add-kluctl-deploy
   target: production
   context: default
   # let it automatically clean up orphan KluctlDeployment resources
