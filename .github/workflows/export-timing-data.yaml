@@ -1,13 +1,12 @@
 name: Export GitHub Action Timing Data
 
 on:
-  # NOTE: Disabling for now while iterating on other workflows...
-  # workflow_run:
-  #   workflows:
-  #     - "Build and Push Container Images"
-  #     - "Run Tests"
-  #   types: [completed]
-  workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "Build and Push Container Images"
+      - "Run Tests"
+      - "Release Please"
+    types: [completed]
 
 jobs:
   export-otel-trace:
