@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.1.2](https://github.com/sidpalas/capstone/compare/services/python/load-generator-python@0.1.1...services/python/load-generator-python@0.1.2) (2025-07-25)
+
+
+### Bug Fixes
+
+* fix utils taskfile references ([c6d3ee9](https://github.com/sidpalas/capstone/commit/c6d3ee9f7ac7fb5d3999205b58788bd9fb1aea3b))
+
+
+### Chores
+
+* add readme to load generator ([a2e26c8](https://github.com/sidpalas/capstone/commit/a2e26c8ca2f6a6751ab13b246d6fe3258b5a6188))
+* release main ([#9](https://github.com/sidpalas/capstone/issues/9)) ([465a073](https://github.com/sidpalas/capstone/commit/465a07323edb9455179bc4815cc900030ccebe33))
+
 ## [0.1.1](https://github.com/sidpalas/capstone/compare/services/node/load-generator-python@0.1.0...services/node/load-generator-python@0.1.1) (2025-07-24)
 
 
