@@ -9,10 +9,12 @@ spec:
     git:
       url: https://github.com/sidpalas/devops-directive-github-actions-course.git
       path: deploy/kubernetes/kluctl-gitops
-  target: {{args.cluster_name}}
+    ref:
+      branch: sp/add-kluctl-deploy
+  target: { { args.cluster_name } }
   args:
     # this passes the cluster_name initially passed via `kluctl deploy -a cluster_name=xxx.example.com` into the KluctlDeployment
-    cluster_name: {{args.cluster_name}}
+    cluster_name: { { args.cluster_name } }
   context: default
   # let it automatically clean up orphan KluctlDeployment resources
   prune: true
