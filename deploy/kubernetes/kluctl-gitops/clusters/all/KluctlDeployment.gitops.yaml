@@ -9,8 +9,8 @@ spec:
     git:
       url: https://github.com/sidpalas/devops-directive-github-actions-course.git
       path: deploy/kubernetes/kluctl-gitops
-    ref:
-      branch: sp/add-kluctl-deploy
+      ref:
+        branch: sp/add-kluctl-deploy
   target: {{ args.cluster_name }}
   args:
     # this passes the cluster_name initially passed via `kluctl deploy -a cluster_name=xxx.example.com` into the KluctlDeployment
