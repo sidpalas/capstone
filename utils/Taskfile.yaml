@@ -1,7 +1,7 @@
 version: "3"
 
 tasks:
-  generate-version-tag:
+  generate-version:
     desc: "Use git describe to generate a tag based on the latest release tag"
     vars:
       SERVICE_RELEASE_TAG: "{{.CLI_ARGS}}"
@@ -13,17 +13,27 @@ tasks:
         echo "${TAG#${PREFIX}}"
     silent: true
 
-  generate-extended-version-tag:
-    desc: "Emit X.Y.Z-000N-g<SHA> using generate-version-tag as the base"
+  generate-version-tag:
+    desc: "Combine the image repo with the version tag"
     vars:
       SERVICE_RELEASE_TAG: "{{.CLI_ARGS}}"
-      BASE:
-        sh: task -s generate-version-tag -- {{.SERVICE_RELEASE_TAG}}
+      VERSION:
+        sh: task -s generate-version -- {{.SERVICE_RELEASE_TAG}}
+    cmds:
+      - |
+        echo "{{.IMAGE_REPO}}:{{.VERSION}}"
+
+  generate-extended-version:
+    desc: "Emit X.Y.Z-000N-g<SHA> using generate-version as the base"
+    vars:
+      SERVICE_RELEASE_TAG: "{{.CLI_ARGS}}"
+      BASE_VERSION:
+        sh: task -s generate-version -- {{.SERVICE_RELEASE_TAG}}
     cmds:
       - |
         set -euo pipefail
 
-        GIT_VERSION="{{.BASE}}"
+        GIT_VERSION="{{.BASE_VERSION}}"
 
         # Ensure we have the -N-g<sha> suffix
         if [[ ! $GIT_VERSION =~ -g[0-9a-fA-F]+$ ]]; then
@@ -35,3 +45,21 @@ tasks:
         IFS='-' read -r BASE_VER COUNT GREF <<<"$GIT_VERSION"
         printf "%s-%04d-%s\n" "$BASE_VER" "$COUNT" "$GREF"
     silent: true
+
+  generate-extended-version-tag:
+    desc: "Combine the image repo with the version tag"
+    vars:
+      SERVICE_RELEASE_TAG: "{{.CLI_ARGS}}"
+      VERSION:
+        sh: task -s generate-extended-version -- {{.SERVICE_RELEASE_TAG}}
+    cmds:
+      - |
+        echo "{{.IMAGE_REPO}}:{{.VERSION}}"
+
+  manual-version-tag:
+    desc: "Combine the image repo with the input version tag"
+    vars:
+      VERSION: "{{.CLI_ARGS}}"
+    cmds:
+      - |
+        echo "{{.IMAGE_REPO}}:{{.VERSION}}"

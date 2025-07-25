@@ -97,13 +97,13 @@ jobs:
         shell: bash
         run: |
           if [[ -n "$INPUT_VERSION" ]]; then
-            echo "image_tag=${INPUT_VERSION}" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-
-          if [[ "$ENVIRONMENT" == "production" ]]; then
+            version=$INPUT_VERSION
+            image_tag=$(task utils:manual-version-tag -- "$INPUT_VERSION")
+          elif [[ "$ENVIRONMENT" == "production" ]]; then
+            version=$(task utils:generate-version -- "$SERVICE")
             image_tag=$(task utils:generate-version-tag -- "$SERVICE")
           else
+            version=$(task utils:generate-extended-version -- "$SERVICE")
             image_tag=$(task utils:generate-extended-version-tag -- "$SERVICE")
           fi
 
@@ -120,6 +120,7 @@ jobs:
       # Trigger deploy as a separate workflow to:
       #   1. enable running it manually via workflow_dispatch
       #   2. keep workflows smaller and more focused
+      # We could use reuseable workflow (with workflow_call trigger... but being able to trigger manually is nice)
       - name: Trigger Deploy
         if: ${{ !env.ACT }} # Don't trigger deploy when running locally
         env:
@@ -128,6 +129,7 @@ jobs:
         run: |
           gh workflow run deploy.yaml \
             -f service=${{ matrix.service }} \
-            -f version=${{ steps.image-tag.outputs.image_tag }} \
+            -f version=${{ steps.image-tag.outputs.version }} \
+            -f image_tag=${{ steps.image-tag.outputs.image_tag }}
             -f environment="{{ needs.filter.outputs.environment }}" \
             -r ${GITHUB_REF}

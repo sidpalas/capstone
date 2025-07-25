@@ -9,6 +9,10 @@ on:
         required: true
         type: string
       version:
+        description: "Version to deploy"
+        required: true
+        type: string
+      image_tag:
         description: "Image tag of the version to deploy"
         required: true
         type: string
@@ -28,4 +32,5 @@ jobs:
       - run: |
           echo ${{ inputs.service }}
           echo ${{ inputs.version }}
+          echo ${{ inputs.image_tag }}
           echo ${{ inputs.environment }}
