@@ -1,0 +1,16 @@
+apiVersion: gitops.kluctl.io/v1beta1
+kind: KluctlDeployment
+metadata:
+  name: demo-app
+  namespace: kluctl-gitops
+spec:
+  interval: 5m
+  source:
+    git:
+      url: https://github.com/sidpalas/devops-directive-github-actions-course.git
+      path: deploy/kubernetes/kluctl
+  target: staging
+  context: default
+  # let it automatically clean up orphan KluctlDeployment resources
+  prune: true
+  delete: true

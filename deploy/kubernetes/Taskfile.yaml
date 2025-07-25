@@ -1,0 +1,92 @@
+version: "3"
+
+env:
+  CLUSTER_NAME: devops-directive-gha-course
+  CIVO_REGION: NYC1
+  # Set default gum style options
+  BORDER: double
+  BORDER_FOREGROUND: "212"
+  PADDING: "1 1"
+  MARGIN: "1 1"
+
+tasks:
+  civo:00-authenticate-cli:
+    cmds:
+      - cmd: |
+          gum style "$(cat <<EOF
+          To get an API key you need to:
+          ---
+          1. Log in or create an account at https://dashboard.civo.com/
+          2. Create a team at https://dashboard.civo.com/teams
+          3. Add yourself to the team
+          4. Navigate to https://dashboard.civo.com/security to get the api key
+
+          🚨🚨🚨 NOTE: Sometimes account verification required for new accounts 
+          (so sign up before you want to use it!) 🚨🚨🚨
+          EOF
+          )"
+        silent: true
+      - civo apikey save
+      - civo apikey ls
+      - cmd: gum style "run \`civo apikey current <KEY_NAME>\` to set the current key as the default (if it is not already)"
+        silent: true
+    desc: Authenticate the Civo CLI
+
+  civo:01-create-network:
+    cmds:
+      - civo network create ${CLUSTER_NAME} --region ${CIVO_REGION}
+    desc: Create a Civo network
+
+  civo:02-create-firewall:
+    cmds:
+      - |
+        civo firewall create ${CLUSTER_NAME} \
+        --network ${CLUSTER_NAME} \
+        --create-rules false \
+        --region ${CIVO_REGION}
+      - |
+        ingress_rule_ids=$(civo firewall rule ls --region ${CIVO_REGION} ${CLUSTER_NAME} -o json | jq -r '.[] | select(.direction == "ingress") | .id')
+        for rule_id in $ingress_rule_ids; do
+          civo firewall rule remove ${CLUSTER_NAME} $rule_id -y --region ${CIVO_REGION}
+        done
+      - civo firewall rule create ${CLUSTER_NAME} --startport 80 --endport 80 --cidr 0.0.0.0/0 --protocol TCP --region ${CIVO_REGION}
+      - civo firewall rule create ${CLUSTER_NAME} --startport 443 --endport 443 --cidr 0.0.0.0/0 --protocol TCP --region ${CIVO_REGION}
+      - civo firewall rule create ${CLUSTER_NAME} --startport 6443 --endport 6443 --cidr 0.0.0.0/0 --protocol TCP --region ${CIVO_REGION}
+      - cmd: gum style "🚨 If you wanted to lock down access to the k8s api, you could instead only allow traffic on 6443 from your IP (or that of a bastion host)"
+        silent: true
+    desc: Create a Civo firewall and set up rules
+
+  civo:03-create-cluster:
+    cmds:
+      - |
+        civo kubernetes create ${CLUSTER_NAME} \
+          --region ${CIVO_REGION} \
+          --network ${CLUSTER_NAME} \
+          --existing-firewall ${CLUSTER_NAME} \
+          --nodes 2 \
+          --size g4s.kube.medium \
+          --remove-applications "traefik2-nodeport" \
+          --wait
+    desc: Create a Civo Kubernetes cluster
+
+  civo:04-create-all:
+    cmds:
+      - task: civo:01-create-network
+      - task: civo:02-create-firewall
+      - task: civo:03-create-cluster
+    desc: Create the Civo network, firewall, and cluster in sequence
+
+  civo:05-get-kubeconfig:
+    cmds:
+      - civo kubernetes config ${CLUSTER_NAME} --region ${CIVO_REGION} --save --switch
+    desc: Get kubeconfig for the cluster
+
+  civo:06-clean-up:
+    cmds:
+      - civo kubernetes delete ${CLUSTER_NAME} --region ${CIVO_REGION} -y
+      - cmd: gum style "There is some delay on the civo side from cluster being deleted to it being removed from the firewall rule usage"
+        silent: true
+      - sleep 10
+      - civo firewall delete ${CLUSTER_NAME} --region ${CIVO_REGION} -y
+      - civo network delete ${CLUSTER_NAME} --region ${CIVO_REGION} -y
+    desc: Clean up the Civo Kubernetes cluster and associated resources
