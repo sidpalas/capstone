@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.3](https://github.com/sidpalas/capstone/compare/services/python/load-generator-python@0.1.2...services/python/load-generator-python@0.1.3) (2025-07-26)
+
+
+### Chores
+
+* trigger release please with empty commit ([30514f4](https://github.com/sidpalas/capstone/commit/30514f4ef14280c9973c48821db61fbaaa5d8548))
+
 ## [0.1.2](https://github.com/sidpalas/capstone/compare/services/python/load-generator-python@0.1.1...services/python/load-generator-python@0.1.2) (2025-07-25)
 
 
