@@ -1,2 +1,2 @@
 clientReact:
-  version: 1.0.0 # PRODUCTION_IMAGE_TAG
+  version: 1.0.0 # production_services/react/client-react
