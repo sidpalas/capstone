@@ -1,7 +1,7 @@
-version: '3'
+version: "3"
 
 # NOTES:
-#  - Because we use --no-skip-checkout + workflow_dispatch, you must commit your changes 
+#  - Because we use --no-skip-checkout + workflow_dispatch, you must commit your changes
 #    (it can be to a branch) in order for the checkout to work
 #  - Uses catthehacker/ubuntu:act-22.04 because node:16-buster-slim doesnt contain git, and 24.04 image is still beta (and failed)
 

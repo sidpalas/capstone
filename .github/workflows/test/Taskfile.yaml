@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 env:
   GITHUB_TOKEN:
@@ -11,7 +11,7 @@ tasks:
   trigger-workflow:
     desc: Trigger GitHub Actions pull_request event using act
     cmds:
-      - | 
+      - |
         act pull_request \
           --container-architecture linux/amd64 \
           -s GITHUB_TOKEN="{{.GITHUB_TOKEN}}" \
