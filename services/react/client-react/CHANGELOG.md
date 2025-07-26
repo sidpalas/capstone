@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/sidpalas/capstone/compare/services/react/client-react@1.0.6...services/react/client-react@1.0.7) (2025-07-26)
+
+
+### Chores
+
+* trigger release please with empty commit ([48709c0](https://github.com/sidpalas/capstone/commit/48709c04181d3c2ad8c7b1845675607410220a2d))
+
 ## [1.0.6](https://github.com/sidpalas/capstone/compare/services/react/client-react@1.0.5...services/react/client-react@1.0.6) (2025-07-26)
 
 
