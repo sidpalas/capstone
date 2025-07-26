@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.7](https://github.com/sidpalas/capstone/compare/services/node/api-node@1.0.6...services/node/api-node@1.0.7) (2025-07-26)
+
+
+### Bug Fixes
+
+* fix release tag for api-node ([065051f](https://github.com/sidpalas/capstone/commit/065051fe8271c04665424249992d365d05ea788b))
+
+
+### Chores
+
+* trigger release please with empty commit ([ad0b36e](https://github.com/sidpalas/capstone/commit/ad0b36e33bcccbb3cd408a2bcda691b74cb1aac5))
+
 ## [1.0.6](https://github.com/sidpalas/capstone/compare/services/node/api-node@1.0.5...services/node/api-node@1.0.6) (2025-07-26)
 
 
