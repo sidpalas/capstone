@@ -77,12 +77,11 @@ jobs:
       - uses: ./.github/actions/setup-dependencies
         with:
           install_task: "true"
-      # TODO: Add dockerhub secret and enable this step
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
-      #   with:
-      #     username: ${{ vars.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@74a5d142397b4f367a81961eba4e8cd7edddf772 # v3.4.0
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
       # TODO: Replace with namespace setup
       - name: Set up QEMU
         uses: docker/setup-qemu-action@29109295f81e9208d7d86ff1c6c12d2833863392 # v3.6.0
@@ -115,10 +114,10 @@ jobs:
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: ${{ matrix.service }}
-          push: false # TODO: actually push the image
+          push: true
           tags: ${{ steps.image-tag.outputs.image_tag }}
+          platforms: linux/amd64,linux/arm64
           # TODO setup caching
-          platforms: linux/amd64 # TODO: build multi-arch image
 
       # Trigger deploy as a separate workflow to:
       #   1. enable running it manually via workflow_dispatch
@@ -129,7 +128,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh workflow run deploy.yaml \
+          gh workflow run update-gitops-manifests.yaml \
             -f service=${{ matrix.service }} \
             -f version=${{ steps.image-tag.outputs.version }} \
             -f image_tag=${{ steps.image-tag.outputs.image_tag }} \
