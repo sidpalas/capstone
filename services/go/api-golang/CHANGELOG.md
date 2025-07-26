@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.2.3...services/go/api-golang@1.2.4) (2025-07-26)
+
+
+### Chores
+
+* trigger release please with empty commit ([f6afe9c](https://github.com/sidpalas/capstone/commit/f6afe9c43292e4f5ba49000ee53cf88de020f1b9))
+
 ## [1.2.3](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.2.2...services/go/api-golang@1.2.3) (2025-07-26)
 
 
