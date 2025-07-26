@@ -3,6 +3,6 @@
     "service": "services/go/api-golang",
     "version": "barbaz",
     "image_tag": "foo:barbaz",
-    "environment": "staging"
+    "environment": "production"
   }
 }

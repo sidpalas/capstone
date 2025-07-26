@@ -1,5 +1,8 @@
 version: '3'
 
+# NOTES:
+#  - Because we use --no-skip-checkout + workflow_dispatch, you must commit your changes 
+#    (it can be to a branch) in order for the checkout to work
 tasks:
   trigger-workflow:
     desc: Trigger GitHub Actions workflow_dispatch event using act
