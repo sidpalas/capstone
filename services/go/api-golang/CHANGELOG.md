@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.3](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.2.2...services/go/api-golang@1.2.3) (2025-07-26)
+
+
+### Bug Fixes
+
+* set working-directory for commit-push step ([3eb0c1a](https://github.com/sidpalas/capstone/commit/3eb0c1aea57cf95ba88f117aad2fcb4d8bd6cc1b))
+* use correct task name ([ff6c361](https://github.com/sidpalas/capstone/commit/ff6c361df0565810032d5c34bf8f7957c1c997b4))
+
+
+### Chores
+
+* trigger release please with empty commit ([e2dbd18](https://github.com/sidpalas/capstone/commit/e2dbd1849c2f29eece427c428300137903bd6325))
+
 ## [1.2.2](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.2.1...services/go/api-golang@1.2.2) (2025-07-26)
 
 

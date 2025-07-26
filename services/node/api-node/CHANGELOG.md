@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/sidpalas/capstone/compare/services/node/api-node@1.0.3...services/node/api-node@1.0.4) (2025-07-26)
+
+
+### Chores
+
+* trigger release please with empty commit ([e2dbd18](https://github.com/sidpalas/capstone/commit/e2dbd1849c2f29eece427c428300137903bd6325))
+
 ## [1.0.3](https://github.com/sidpalas/capstone/compare/services/node/api-node@1.0.2...services/node/api-node@1.0.3) (2025-07-26)
 
 
