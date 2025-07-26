@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/sidpalas/capstone/compare/services/other/postgresql@1.2.1...services/other/postgresql@1.2.2) (2025-07-26)
+
+
+### Chores
+
+* trigger release please with empty commit ([960f65d](https://github.com/sidpalas/capstone/commit/960f65ddbed222e7bcb88fbbb07c7cd017fad739))
+
 ## [1.2.1](https://github.com/sidpalas/capstone/compare/services/other/postgresql@1.2.0...services/other/postgresql@1.2.1) (2025-07-26)
 
 
