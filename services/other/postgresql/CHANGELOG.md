@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/sidpalas/capstone/compare/services/other/postgresql@1.1.1...services/other/postgresql@1.2.0) (2025-07-26)
+
+
+### Features
+
+* add gitops tag updating ([#16](https://github.com/sidpalas/capstone/issues/16)) ([b167c8f](https://github.com/sidpalas/capstone/commit/b167c8f6793a091ad7b5911a28545d5e5fd484d7))
+
 ## [1.1.1](https://github.com/sidpalas/capstone/compare/services/other/postgresql@1.1.0...services/other/postgresql@1.1.1) (2025-07-25)
 
 

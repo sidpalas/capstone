@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.1.1...services/go/api-golang@1.2.0) (2025-07-26)
+
+
+### Chores
+
+* **services/go/api-golang:** Synchronize apis-and-db versions
+
 ## [1.1.1](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.1.0...services/go/api-golang@1.1.1) (2025-07-25)
 
 

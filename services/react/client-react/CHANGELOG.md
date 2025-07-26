@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/sidpalas/capstone/compare/services/react/client-react@1.0.1...services/react/client-react@1.0.2) (2025-07-26)
+
+
+### Bug Fixes
+
+* grant write permissions for update manifests job ([446e4eb](https://github.com/sidpalas/capstone/commit/446e4ebd36931bf1fdf668daee3a74475e3fdeeb))
+
 ## [1.0.1](https://github.com/sidpalas/capstone/compare/services/react/client-react@1.0.0...services/react/client-react@1.0.1) (2025-07-24)
 
 
