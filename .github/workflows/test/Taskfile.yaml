@@ -4,11 +4,11 @@ env:
   GITHUB_TOKEN:
     sh: gh auth token
 
+# Notes:
+#  - The current config results in go/api-golang service being "changed" since that is what PR #10 represents (as specified in event.json)
+#  - Uses catthehacker/ubuntu:act-22.04 because node:16-buster-slim doesnt contain git, and 24.04 image is still beta (and failed)
 tasks:
   trigger-workflow:
-    # notes:
-    #  - current config results in go/api-golang service being "changed" since that is what PR #10 represents (as specified in event.json)
-    #  - used catthehacker/ubuntu:act-22.04 because node:16-buster-slim doesnt contain git, and 24.04 image is still beta (and failed)
     desc: Trigger GitHub Actions pull_request event using act
     cmds:
       - | 

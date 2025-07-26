@@ -4,9 +4,10 @@ env:
   GITHUB_TOKEN:
     sh: gh auth token
 
+# Notes:
+#  - Expects HONEYCOMB_OTLP_HEADERS to be defined in .secrets file
 tasks:
   trigger-workflow:
-    # Expects HONEYCOMB_OTLP_HEADERS to be defined in .secrets file
     desc: Trigger GitHub Actions workflow_run event using act
     cmds:
       - |
