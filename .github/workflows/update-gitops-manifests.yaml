@@ -36,7 +36,7 @@ jobs:
       - name: Generate Commit Message
         id: generate-commit-message
         run: |
-          commit_message="chore: update ${{ inputs.service }}, ${{ inputs.version }}, ${{ inputs.environment }}"
+          commit_message="chore: update ${{ inputs.environment }}, ${{ inputs.service }}, ${{ inputs.version }}"
           echo "commit_message=${commit_message}" >> "$GITHUB_OUTPUT"
       - working-directory: ${{ inputs.service }}
         run: |
@@ -52,5 +52,3 @@ jobs:
         with:
           commit_message: ${{ steps.generate-commit-message.outputs.commit_message }}
           branch: main
-      - run: |
-          echo ${{ steps.generate-commit-message.outputs.commit_message }}
