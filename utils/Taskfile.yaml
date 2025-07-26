@@ -71,6 +71,9 @@ tasks:
       EXCLUDED_FILES: |
         {{.TASKFILE_DIR}}/Taskfile.yaml
         MORE_FILES_CAN_GO_HERE
+      SED: # This is to make compatible between gsed on macos and sed on linux
+        sh: |
+          if command -v gsed >/dev/null 2>&1; then echo gsed; else echo sed; fi
     cmds:
       - cmd: |
           if [ -z "{{.NEW_TAG}}" ] || [ -z "{{.IDENTIFIER_COMMENT}}" ] || [ -z "{{.STARTING_PATH}}" ]; then
@@ -86,25 +89,15 @@ tasks:
             if ! echo "{{ .EXCLUDED_FILES }}" | grep -q "$file"; then
               echo "Updating: $file"
               # TODO: macos and gnu sed behave differently here... (currently only works with gsed locally)
-              sed -i "s|\(\s*.*:\s*\).* \({{ .IDENTIFIER_COMMENT }}\)|\1{{ .NEW_TAG }} \2|" "$file";
+              {{.SED}} -i "s|\(\s*.*:\s*\).* \({{ .IDENTIFIER_COMMENT }}\)|\1{{ .NEW_TAG }} \2|" "$file";
             fi
           done
 
-  update-image-tags-root:
-    desc: "Update image tags for kluctl production config"
+  update-image-tags-service:
+    desc: "Update image tags for kluctl config"
     cmds:
       - task: update-image-tags
         vars:
-          STARTING_PATH:
-            sh: git rev-parse --show-toplevel
-
-  # Example of updating a specific image + environment tag
-  update-image-tags-root-golang:
-    desc: "Update image tags for kluctl production config"
-    cmds:
-      - task: update-image-tags
-        vars:
-          NEW_TAG: foobarbaz
-          IDENTIFIER_COMMENT: "# production_services/go/api-golang"
+          IDENTIFIER_COMMENT: "# {{.ENVIRONMENT}}_{{.SERVICE_RELEASE_TAG}}"
           STARTING_PATH:
             sh: git rev-parse --show-toplevel

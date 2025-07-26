@@ -8,6 +8,7 @@ tasks:
         act workflow_dispatch \
           --container-architecture linux/amd64 \
           -e {{.PWD}}/event.json \
-          -P ubuntu-24.04=node:16-bullseye-slim \
+          -P ubuntu-24.04=catthehacker/ubuntu:act-22.04 \
           --directory ../../.. \
+          --no-skip-checkout \
           -W .github/workflows/deploy.yaml

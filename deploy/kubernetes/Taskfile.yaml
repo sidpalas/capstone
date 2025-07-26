@@ -86,7 +86,8 @@ tasks:
       - civo kubernetes delete ${CLUSTER_NAME} --region ${CIVO_REGION} -y
       - cmd: gum style "There is some delay on the civo side from cluster being deleted to it being removed from the firewall rule usage"
         silent: true
-      - sleep 10
+      - sleep 20
       - civo firewall delete ${CLUSTER_NAME} --region ${CIVO_REGION} -y
+      - cmd: gum style "The network may fail to delete if you have volumes attached to it... delete those first and then delete the network"
       - civo network delete ${CLUSTER_NAME} --region ${CIVO_REGION} -y
     desc: Clean up the Civo Kubernetes cluster and associated resources
