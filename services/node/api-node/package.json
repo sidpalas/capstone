@@ -1,6 +1,6 @@
 {
   "name": "api-node",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "simple api that connects to postgres",
   "main": "src/index.js",
   "scripts": {
