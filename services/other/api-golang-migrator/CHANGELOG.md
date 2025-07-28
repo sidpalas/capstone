@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.2.9](https://github.com/sidpalas/capstone/compare/services/other/api-golang-migrator@1.2.8...services/other/api-golang-migrator@1.2.9) (2025-07-28)
+
+
+### Chores
+
+* trigger release please with empty commit ([d004a8c](https://github.com/sidpalas/capstone/commit/d004a8c701dc895ac04e4e3755ed5d6824850279))
+* trigger release please with empty commit ([2e6f3d8](https://github.com/sidpalas/capstone/commit/2e6f3d896992ae2a505a8872ba22405208f7aaa2))
+* trigger release please with empty commit ([ad0b36e](https://github.com/sidpalas/capstone/commit/ad0b36e33bcccbb3cd408a2bcda691b74cb1aac5))
+* trigger release please with empty commit ([48709c0](https://github.com/sidpalas/capstone/commit/48709c04181d3c2ad8c7b1845675607410220a2d))
+* trigger release please with empty commit ([f6afe9c](https://github.com/sidpalas/capstone/commit/f6afe9c43292e4f5ba49000ee53cf88de020f1b9))
+* trigger release please with empty commit ([e2dbd18](https://github.com/sidpalas/capstone/commit/e2dbd1849c2f29eece427c428300137903bd6325))
+* trigger release please with empty commit ([960f65d](https://github.com/sidpalas/capstone/commit/960f65ddbed222e7bcb88fbbb07c7cd017fad739))
+* trigger release please with empty commit ([30514f4](https://github.com/sidpalas/capstone/commit/30514f4ef14280c9973c48821db61fbaaa5d8548))
+
 ## [1.2.8](https://github.com/sidpalas/capstone/compare/services/other/postgresql@1.2.7...services/other/postgresql@1.2.8) (2025-07-28)
 
 
