@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "load-generator-python"
-version = "0.1.9"
+version = "0.1.10"
 description = ""
 authors = ["sid palas"]
 
