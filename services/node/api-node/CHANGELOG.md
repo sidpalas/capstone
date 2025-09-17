@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0](https://github.com/sidpalas/capstone/compare/services/node/api-node@1.0.9...services/node/api-node@1.1.0) (2025-09-17)
+
+
+### Features
+
+* add dependency install step ([#29](https://github.com/sidpalas/capstone/issues/29)) ([3b00056](https://github.com/sidpalas/capstone/commit/3b000563250035722c38060cc1cc0a10d3716f57))
+* add example tests ([3bcbbd8](https://github.com/sidpalas/capstone/commit/3bcbbd8bf4bf4ebb9b982641bbc6dfc24decade8))
+* add status check job ([#32](https://github.com/sidpalas/capstone/issues/32)) ([1e0f702](https://github.com/sidpalas/capstone/commit/1e0f70247660f23280823564ee2529f45a2e4a07))
+
 ## [1.0.9](https://github.com/sidpalas/capstone/compare/services/node/api-node@1.0.8...services/node/api-node@1.0.9) (2025-07-28)
 
 

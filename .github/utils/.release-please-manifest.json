@@ -1,7 +1,7 @@
 {
-  "services/go/api-golang": "1.2.9",
-  "services/node/api-node": "1.0.9",
-  "services/python/load-generator-python": "0.1.10",
-  "services/react/client-react": "1.0.10",
-  "services/other/api-golang-migrator": "1.2.9"
+  "services/go/api-golang": "1.3.0",
+  "services/node/api-node": "1.1.0",
+  "services/python/load-generator-python": "0.2.0",
+  "services/react/client-react": "1.1.0",
+  "services/other/api-golang-migrator": "1.3.0"
 }

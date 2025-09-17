@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.0](https://github.com/sidpalas/capstone/compare/services/python/load-generator-python@0.1.10...services/python/load-generator-python@0.2.0) (2025-09-17)
+
+
+### Features
+
+* add dependency install step ([#29](https://github.com/sidpalas/capstone/issues/29)) ([3b00056](https://github.com/sidpalas/capstone/commit/3b000563250035722c38060cc1cc0a10d3716f57))
+* add example tests ([3bcbbd8](https://github.com/sidpalas/capstone/commit/3bcbbd8bf4bf4ebb9b982641bbc6dfc24decade8))
+
 ## [0.1.10](https://github.com/sidpalas/capstone/compare/services/python/load-generator-python@0.1.9...services/python/load-generator-python@0.1.10) (2025-07-28)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.2.9...services/go/api-golang@1.3.0) (2025-09-17)
+
+
+### Features
+
+* add dependency install step ([#29](https://github.com/sidpalas/capstone/issues/29)) ([3b00056](https://github.com/sidpalas/capstone/commit/3b000563250035722c38060cc1cc0a10d3716f57))
+* add example tests ([3bcbbd8](https://github.com/sidpalas/capstone/commit/3bcbbd8bf4bf4ebb9b982641bbc6dfc24decade8))
+
 ## [1.2.9](https://github.com/sidpalas/capstone/compare/services/go/api-golang@1.2.8...services/go/api-golang@1.2.9) (2025-07-28)
 
 
