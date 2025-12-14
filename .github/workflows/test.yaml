@@ -1,6 +1,13 @@
 name: Run test
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - "services/**"
+      - ".github/workflows/test.yaml"
+  pull_request:
   workflow_dispatch:
 
 
@@ -21,15 +28,11 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    needs: filter
     strategy:
       fail-fast: false
-      matrix: 
-        service: [
-                  # "services/node/api-node", 
-                  # "services/go/api-golang",
-                  # "services/react/client-react",
-                  "services/python/load-generator-python"
-        ]
+      matrix:
+        service: ${{ fromJson(needs.filter.outputs.services) }}
 
     steps:
       - name: Checkout Code
