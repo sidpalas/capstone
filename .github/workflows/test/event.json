@@ -1,5 +1,5 @@
 {
-  "pull_request": {
-    "number": 30
+  "repository": {
+    "default_branch": "main"
   }
 }

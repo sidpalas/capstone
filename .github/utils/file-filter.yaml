@@ -1,0 +1,18 @@
+services/go/api-golang: &api-golang
+  - "services/go/api-golang/**"
+  - "services/other/api-golang-migrator/**"
+  - ".github/workflows/test.yaml"
+
+services/node/api-node:
+  - "services/node/api-node/**"
+  - ".github/workflows/test.yaml"
+
+services/other/api-golang-migrator: *api-golang
+
+services/python/load-generator-python:
+  - "services/python/load-generator-python/**"
+  - ".github/workflows/test.yaml"
+
+services/react/client-react:
+  - "services/react/client-react/**"
+  - ".github/workflows/test.yaml"
