@@ -1,0 +1,18 @@
+version: 3
+
+env:
+  GITHUB_TOKEN:
+    sh: gh auth token
+
+tasks:
+  trigger-workflow:
+    desc: Trigger Github Actions Workflow Using ACT
+    cmds:
+      - |
+        act workflow_dispatch \
+          --container-architecture linux/amd64 \
+          -s GITHUB_TOKEN="{{.GITHUB_TOKEN}}" \
+          -P ubuntu-22.04=catthehacker/ubuntu:act-22.04 \
+          -e {{.PWD}}/events.json \
+          --directory ../../.. \
+          -W .github/workflows/test.yml
