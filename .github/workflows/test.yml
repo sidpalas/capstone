@@ -1,0 +1,79 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - services/**
+      - .github/workflows/test.yml
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  filter:
+    runs-on: ubuntu-24.04
+    outputs:
+      services: ${{steps.changes.outputs.changes}}
+    steps:
+      - name: Install Checkout
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #V6.0.0
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36
+        id: changes
+        with:
+          token: ${{ secrets.GITHUB_TOKEN}}
+          filters: .github/utils/file-filters.yml
+
+  test:
+    runs-on: ubuntu-24.04
+    needs: filter
+    strategy:
+      matrix:
+        services: ${{fromJson(needs.filter.outputs.services)}}
+      fail-fast: false
+    steps:
+      - name: Install Checkout
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 #V6.0.0
+
+      - name: Install Task
+        uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 #V4.0.1
+        with:
+          uri: https://github.com/go-task/task/releases/download/v3.48.0/task_linux_amd64.tar.gz
+          name: task
+          version: v3.48.0
+
+      - name: Install Node
+        if: startsWith(matrix.services, 'services/node/') || startsWith(matrix.services, 'services/react/')
+        uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
+        with:
+          node-version-file: ${{matrix.services}}/package.json
+          cache: npm
+          cache-dependency-path: ${{matrix.services}}/package-lock.json
+
+      - name: Install GO
+        if: startsWith(matrix.services, 'services/go/')
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 #V5.50
+        with:
+          go-version-file: ${{matrix.services}}/go.mod
+          cache-dependency-path: ${{matrix.services}}/go.sum
+
+      - name: Install Poetry
+        if: startsWith(matrix.services, 'services/python/')
+        uses: snok/install-poetry@d526ede1e27960b7b181a5ac53044f552afdaa38 #V1.4.1
+
+      - name: Install Python
+        if: startsWith(matrix.services, 'services/python/')
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55 #V5.5.0
+        with:
+          python-version-file: ${{matrix.services}}/pyproject.toml
+          cache: poetry
+          cache-dependency-path: ${{matrix.services}}/poetry.lock
+
+      - name: Install Dependencies
+        working-directory: ${{matrix.services}}
+        run: |
+          task install-ci
+      - name: Run Tests
+        working-directory: ${{matrix.services}}
+        run: |
+          task test
