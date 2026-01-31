@@ -15,7 +15,7 @@
     "kubernetes-helm@latest",
     "kustomize@latest",
     "python312@latest",
-    "go@1.19",
+    "go@1.21",
     "poetry@latest",
     "namespace-cli@latest",
     "gnused@latest",
