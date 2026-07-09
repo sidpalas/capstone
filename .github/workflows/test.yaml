@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  test-node:
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout Code
@@ -14,7 +14,7 @@ jobs:
         with:
           node-version-file: services/node/api-node/package.json
           cache: "npm"
-          cache-dependency-path: services/node/api-node/package-lock.json
+          cache-dependency-path: services/node/api-node/package-lock.json #for cache key
 
       - name: Install task #to call on specific test tasks in taskfile under service > lang
         uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
@@ -30,5 +30,34 @@ jobs:
 
       - name: Run tests
         working-directory: services/node/api-node
+        run: |
+          task test
+
+  test-go:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #v7.0.0
+      - name: Setup Go
+        uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
+        with:
+          go-version-file: services/go/api-golang/go.mod
+          #cache enabled by default
+          cache-dependency-path: services/go/api-golang/go.sum
+
+      - name: Install task #to call on specific test tasks in taskfile under service > lang
+        uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
+        with:
+          uri: https://github.com/go-task/task/releases/download/v3.52.0/task_linux_amd64.tar.gz
+          name: task
+          version: v3.52.0
+
+      - name: Install app Deps
+        working-directory: services/go/api-golang
+        run: |
+          task install-ci
+
+      - name: Run tests
+        working-directory: services/go/api-golang
         run: |
           task test
