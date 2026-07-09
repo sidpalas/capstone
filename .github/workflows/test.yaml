@@ -13,7 +13,8 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: services/node/api-node/package.json
-          cache-dependency-path: services/node/api-node/package.json
+          cache: "npm"
+          cache-dependency-path: services/node/api-node/package-lock.json
 
       - name: Install task #to call on specific test tasks in taskfile under service > lang
         uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
