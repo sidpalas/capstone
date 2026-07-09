@@ -1,0 +1,22 @@
+# Have top-level key for each service
+#   Under that, inc. all paths associated with service
+
+services/go/api-golang: &api_golang
+  - "services/go/api-golang/**"
+  - "services/other/api-golang-migrator/**" # db migrations tied to service
+  - ".github/workflows/test.yaml" # if tests change, want to run them
+
+services/node/api-node:
+  - "services/node/api-node/**"
+  - ".github/workflows/test.yaml"
+
+services/other/api-golang-migrator: # identical to services/go/api-golang; if one changed, both will be detected as having changed
+  - *api_golang
+
+services/python/load-generator-python:
+  - "services/python/load-generator-python/**"
+  - ".github/actions/setup-dependencies/action.yaml"
+
+services/react/client-react:
+  - "services/react/client-react/**"
+  - ".github/actions/setup-dependencies/action.yaml"
