@@ -4,6 +4,16 @@ on:
   workflow_dispatch:
 
 jobs:
+  filter:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: filter
+        id: filter # need ID passes output to downstream job
+        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        with:
+          token: ${{ secrets.token }}
+          filters: ./github/utils/file-filters.yaml
+
   test:
     runs-on: ubuntu-24.04
     strategy: # use matrix to run tests of different services
@@ -16,7 +26,6 @@ jobs:
             "services/python/load-generator-python",
             "services/react/client-react",
           ]
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #v7.0.0
