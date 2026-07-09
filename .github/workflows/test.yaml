@@ -30,13 +30,7 @@ jobs:
     strategy: # use matrix to run tests of different services
       fail-fast: false #don't stop matrix if one run (i.e. one service) fails
       matrix:
-        service:
-          [
-            "services/go/api-golang",
-            "services/node/api-node",
-            "services/python/load-generator-python",
-            "services/react/client-react",
-          ]
+        service: ${{ fromJson(needs.filter.outputs.services) }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #v7.0.0
