@@ -1,5 +1,9 @@
 version: "3" #version of Taskfile syntax
 
+env:
+  GITHUB_TOKEN:
+    sh: gh auth token # runs github auth token cmd
+
 tasks:
   trigger-workflow:
     desc: Trigger GitHub actions workflow using act
@@ -7,6 +11,7 @@ tasks:
       - |
         act workflow_dispatch \
           --container-architecture linux/amd64 \
+          -s GITHUB_TOKEN="{{.GITHUB_TOKEN}}"
           -e {{.PWD}}/event.json
           -P ubuntu-24.04=catthehacker/ubuntu:act-22.04 \
           --directory ../../.. \
