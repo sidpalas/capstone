@@ -4,41 +4,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  test-node:
+  test:
     runs-on: ubuntu-24.04
+    strategy: # use matrix to run tests of different services
+      fail-fast: false #don't stop matrix if one run (i.e. one service) fails
+      matrix:
+        service: ["services/node/api-node", "services/go/api-golang"]
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #v7.0.0
+
+      ####### Setup Langs
+
       - name: Setup Node
+        if: ${{ matrix.service == 'services/node/api-node'}}
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version-file: services/node/api-node/package.json
           cache: "npm"
           cache-dependency-path: services/node/api-node/package-lock.json #for cache key
 
-      - name: Install task #to call on specific test tasks in taskfile under service > lang
-        uses: supplypike/setup-bin@8e3f88b4f143d9b5c3497f0fc12d45c83c123787 # v4.0.1
-        with:
-          uri: https://github.com/go-task/task/releases/download/v3.52.0/task_linux_amd64.tar.gz
-          name: task
-          version: v3.52.0
-
-      - name: Install Node Deps
-        working-directory: services/node/api-node
-        run: |
-          task install-ci
-
-      - name: Run tests
-        working-directory: services/node/api-node
-        run: |
-          task test
-
-  test-go:
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 #v7.0.0
       - name: Setup Go
+        if: ${{ matrix.service == 'service/go/api-golang'}}
         uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 # v5.5.0
         with:
           go-version-file: services/go/api-golang/go.mod
@@ -52,12 +40,12 @@ jobs:
           name: task
           version: v3.52.0
 
-      - name: Install app Deps
-        working-directory: services/go/api-golang
+      - name: Install app deps
+        working-directory: ${{ matrix.service }}
         run: |
           task install-ci
 
       - name: Run tests
-        working-directory: services/go/api-golang
+        working-directory: ${{ matrix.service }}
         run: |
           task test
