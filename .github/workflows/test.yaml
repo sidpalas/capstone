@@ -22,7 +22,7 @@ jobs:
           working-directory: ${{ github.workspace }}
           token: ${{ secrets.GITHUB_TOKEN }} # github.token also acceptable
           filters: .github/utils/file-filters.yaml
-          base: ${{ github.event_name == 'workflow_dispatch' && 'HEAD~1' || '' }}
+          base: "main"
 
   test:
     runs-on: ubuntu-24.04
