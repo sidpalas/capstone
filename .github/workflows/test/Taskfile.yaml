@@ -11,8 +11,8 @@ tasks:
       - |
         act workflow_dispatch \
           --container-architecture linux/amd64 \
-          -s GITHUB_TOKEN="{{.GITHUB_TOKEN}}"
-          -e {{.PWD}}/event.json
+          -s GITHUB_TOKEN="{{.GITHUB_TOKEN}}" \
+          -e "{{.PWD}}/event.json" \
           -P ubuntu-24.04=catthehacker/ubuntu:act-22.04 \
           --directory ../../.. \
           -W .github/workflows/test.yaml
