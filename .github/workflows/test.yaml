@@ -1,64 +1,82 @@
-name: Run Tests
+name : Run Tests
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - services/**
-  pull_request:
-  workflow_dispatch:
+    push:
+        branches:
+            - main
+        paths:
+            - 'services/**'
+            - .github/workflows/test.yaml
+    pull_request:
+    workflow_dispatch:
 
 jobs:
-  filter:
-    runs-on: ubuntu-24.04
-    outputs:
-      services: ${{ steps.filter.outputs.changes }}
-    steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
-      - name: Paths Changes Filter
-        id: filter
-        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          filters: .github/utils/file-filters.yaml
+    filter:
+        runs-on: ubuntu-24.04
+        outputs:
+            services: ${{ steps.filter.outputs.changes }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
-  run-tests:
-    runs-on: ubuntu-24.04
-    if: ${{ needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '' }}
-    needs: filter
-    strategy:
-      matrix:
-        service: ${{ fromJson(needs.filter.outputs.services) }}
-      fail-fast: false
-    steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
-      - uses: ./.github/actions/setup-dependencies
-        with:
-          install_task: "true"
-          install_go: ${{ startsWith(matrix.service, 'services/go/') }}
-          install_node: ${{ startsWith(matrix.service, 'services/node/') || startsWith(matrix.service, 'react/') }}
-          install_python: ${{ startsWith(matrix.service, 'services/python/') }}
-          service_path: ${{ matrix.service }}
-      - name: Install / Build
-        working-directory: ${{ matrix.service }}
-        run: |
-          task install-ci
-      - name: run tests
-        working-directory: ${{ matrix.service }}
-        run: |
-          task test
+            - name: filter
+              id: filter
+              uses: dorny/paths-filter@v4.0.3 # v4 (runtime: Node.js 24)
+              with:
+                token: ${{ secrets.GITHUB_TOKEN }}
+                filters: .github/utils/file-filters.yaml
+    test:
+        runs-on: ubuntu-24.04
+        needs: filter
+        strategy:
+          fail-fast: false
+          matrix:
+            service: ${{ fromJSON(needs.filter.outputs.services) }}
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
 
-  # This job gets skipped if all upstream jobs succeeded, but it runs (and fails) if any upstream failed.
-  # This is what we want since GitHub required actions do not block merging when skipped, but can block it when failed.
-  # See: https://github.com/actions/runner/issues/2566#issuecomment-3053484216
-  run-tests-failure-alert:
-    runs-on: ubuntu-latest
-    needs: [filter, run-tests]
-    if: ${{ cancelled() || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'failure') }}
-    steps:
-      - name: Conditionally Fail Required Check
-        shell: bash
-        run: |
-          echo "::error Some required job has failed!"
-          exit 1
+            - name: Set up Node.js
+              if: ${{ startsWith(matrix.service, 'services/node') || startsWith(matrix.service, 'services/react') }}
+              uses: actions/setup-node@d7a11313b581b306c961b506cfc8971208bb03f6 #4.4.0
+              with:
+                node-version-file: ${{ matrix.service }}/package.json
+                cache: "npm"
+                cache-dependency-path: ${{ matrix.service }}/package-lock.json
+
+            - name: Set up go
+              if: ${{ startsWith(matrix.service, 'services/go') }}
+              uses: actions/setup-go@d35c59abb061a4a6fb18e82ac0862c26744d6ab5 #5.5.0
+              with:
+                go-version-file: services/go/api-golang/go.mod
+                cache-dependency-path: services/go/api-golang/go.sum
+            
+            - name: Set up Poetry
+              if: ${{ startsWith(matrix.service, 'services/python') }}
+              uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a
+             
+            - name: Set up Python
+              if: ${{ startsWith(matrix.service, 'services/python') }}
+              uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 #v5.6.0
+              with:
+                python-version-file: ${{ matrix.service }}/pyproject.toml
+                cache: poetry
+                cache-dependency-path: ${{ matrix.service }}/poetry.lock
+
+            - name: Set up Task
+              uses: supplypike/setup-bin@1fafb085795af4a3f183502f3a9dffa8f7b83217 #5.0.0
+              with:
+                uri: https://github.com/go-task/task/releases/download/v3.44.1/task_linux_amd64.tar.gz #v3.44.1
+                name: task
+                version: 3.44.1
+
+            - name : Install app dependencies
+              working-directory: ${{ matrix.service }}
+              run: |
+                task install-ci
+
+            - name : Run Tests
+              working-directory: ${{ matrix.service }}
+              run: |
+                task test
+            
