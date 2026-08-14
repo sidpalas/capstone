@@ -1,6 +1,13 @@
 name: Run Tests
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - services/**
+      - .github/workflows/test.yaml
+  pull_request:
   workflow_dispatch:
 
 jobs:
