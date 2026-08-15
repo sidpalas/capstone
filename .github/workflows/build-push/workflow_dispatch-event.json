@@ -1,0 +1,9 @@
+{
+    "inputs": {
+        "service": "services/node/api-node",
+        "version": "foobarbaz"
+    },
+    "repository":{
+        "default_branch": "main"
+    }
+}

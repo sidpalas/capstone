@@ -28,6 +28,7 @@ jobs:
     test:
         runs-on: ubuntu-24.04
         needs: filter
+        if: ${{ needs.filter.outputs.services != '[]'  &&  needs.filter.outputs.services != '' }}
         strategy:
           fail-fast: false
           matrix:
