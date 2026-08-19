@@ -1,0 +1,66 @@
+name: Update GitOps Manifests
+
+on:
+    workflow_dispatch:
+        inputs:
+            service:
+                required: true
+                description: The service to update manifests for
+                type: choice
+                options:
+                    - services/go/api-golang
+                    - services/node/api-node
+                    - services/python/load-generator-python
+                    - services/react/client-react
+            version:
+                required: true
+                description: The version to update manifests to
+                type: string
+            environment:
+                required: true
+                description: The environment to update manifests for
+                type: choice
+                options:
+                    - development
+                    - staging
+                    - production
+
+concurrency:
+    group: ${{ github.workflow }}-gitops-${{ inputs.environment }}-${{ inputs.service }} 
+    cancel-in-progress: false   
+
+jobs:
+    update-manifests:
+        runs-on: ubuntu-24.04
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+
+            - name: Set up Task
+              uses: ./.github/actions/setup-dependencies
+
+            - name: Generate commit message
+              id: generate-commit-msg
+              run: |
+                  commit_msg="chore: update ${{ inputs.environment }}, ${{  inputs.service }} , ${{ inputs.version }} [skip ci]"
+                  echo "commit_msg=$commit_msg" >> $GITHUB_OUTPUT
+
+            - name: Update GitOps Manifests
+              working-directory: ${{ inputs.service }}
+              run: |
+                  task utils:update-image-tags-service \
+                      NEW_TAG=${{ inputs.version }} \
+                      ENVIRONMENT=${{ inputs.environment }} \
+
+            - name: check diff
+              run: |
+                  git --no-pager diff
+            - name: Commit and push changes
+              if: ${{ !env.ACT }}
+              working-directory: ${{ inputs.service }}
+              run: |
+                    task utils:git:commit-push \
+                        COMMIT_MSG="${{ steps.generate-commit-msg.outputs.commit_msg }}" \
+                        BRANCH="main" 
+
+
