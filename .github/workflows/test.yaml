@@ -6,8 +6,10 @@ on:
       - main
     paths:
       - services/**
+      - .github/workflows/test.yaml
   pull_request:
   workflow_dispatch:
+    
 
 jobs:
   filter:
@@ -15,15 +17,17 @@ jobs:
     outputs:
       services: ${{ steps.filter.outputs.changes }}
     steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+      - name: Checkout Code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
       - name: Paths Changes Filter
         id: filter
-        uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           filters: .github/utils/file-filters.yaml
 
-  run-tests:
+  tests:
     runs-on: ubuntu-24.04
     if: ${{ needs.filter.outputs.services != '[]' && needs.filter.outputs.services != '' }}
     needs: filter
@@ -32,33 +36,49 @@ jobs:
         service: ${{ fromJson(needs.filter.outputs.services) }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
-      - uses: ./.github/actions/setup-dependencies
+      - name: Checkout Code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      
+      - name: Setup Nodejs environment
+        if: ${{ startsWith(matrix.service, 'services/node') || startsWith(matrix.service, 'services/react' ) }}  
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 #v7.0.0
+        with: 
+          node-version-file: ${{ matrix.service }}/package.json
+          cache: "npm"
+          cache-dependency-path: ${{ matrix.service }}/package-lock.json
+
+      - name: Setup go
+        if: ${{ startsWith(matrix.service, 'services/go') }}  
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e #v7.0.0
         with:
-          install_task: "true"
-          install_go: ${{ startsWith(matrix.service, 'services/go/') }}
-          install_node: ${{ startsWith(matrix.service, 'services/node/') || startsWith(matrix.service, 'react/') }}
-          install_python: ${{ startsWith(matrix.service, 'services/python/') }}
-          service_path: ${{ matrix.service }}
-      - name: Install / Build
+            go-version-file: ${{ matrix.service }}/go.mod
+            cache-dependency-path: ${{ matrix.service }}/go.sum
+
+      - name: Install poetry
+        if: ${{ startsWith(matrix.service, 'services/python') }}  
+        uses: snok/install-poetry@a783c322200f0519c7926aa6faa857c4e23e9263 #v1.4.2
+
+      - name: Install python
+        if: ${{ startsWith(matrix.service, 'services/python') }}  
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 #v7.0.0 
+        with:
+            python-version-file: ${{ matrix.service }}/pyproject.toml
+            cache: poetry
+            cache-dependency-path: ${{ matrix.service }}/poetry.lock
+        
+      - name: Install Task/ setup Binary
+        uses: supplypike/setup-bin@8365380a806a88e7a0f0d07059b175ca2f5418d7 #v5.0.1 
+        with:
+            uri: https://github.com/go-task/task/releases/download/v3.53.1/task_linux_amd64.tar.gz
+            name: task
+            version: v3.53.1
+
+      - name: Install app deps
         working-directory: ${{ matrix.service }}
         run: |
           task install-ci
+
       - name: run tests
         working-directory: ${{ matrix.service }}
         run: |
           task test
-
-  # This job gets skipped if all upstream jobs succeeded, but it runs (and fails) if any upstream failed.
-  # This is what we want since GitHub required actions do not block merging when skipped, but can block it when failed.
-  # See: https://github.com/actions/runner/issues/2566#issuecomment-3053484216
-  run-tests-failure-alert:
-    runs-on: ubuntu-latest
-    needs: [filter, run-tests]
-    if: ${{ cancelled() || contains(needs.*.result, 'cancelled') || contains(needs.*.result, 'failure') }}
-    steps:
-      - name: Conditionally Fail Required Check
-        shell: bash
-        run: |
-          echo "::error Some required job has failed!"
-          exit 1

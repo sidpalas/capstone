@@ -1,6 +1,0 @@
-{
-  "inputs": {
-    "service": "services/go/api-golang",
-    "version": "foobarbaz"
-  }
-}
