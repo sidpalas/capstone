@@ -52,7 +52,10 @@ runs:
     # Installing poetry before running setup-python to enable using poetry type cache
     - name: Set up Poetry
       if: ${{ inputs.install_python == 'true' }}
-      uses: snok/install-poetry@d526ede1e27960b7b181a5ac53044f552afdaa38 # v1.4.1
+      shell: bash
+      run: |
+        curl --fail --silent --show-error https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> "$GITHUB_PATH"
 
     - name: Set up Python
       if: ${{ inputs.install_python == 'true' }}
